@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
     <title>Dashboard</title>
 </head>
 
@@ -43,9 +45,18 @@
         </div>
         <p class="text-gray-600 dark:text-gray-300 text-xl">No data available yet — start by adding new payments.</p>
 
-        <div id="chart">
-            
+        <div class="flex flex-row">
+            <div id="chart1">
+
+            </div>
+            <div id="chart2">
+
+            </div>
+            <div id="chart3">
+
+            </div>
         </div>
+
     </main>
 
     <!-- ADD EXPENSE MODAL -->
@@ -66,7 +77,6 @@
     <script src="js/forms.js"></script>
     <script src="js/validators.js"></script>
     <script src="js/dashboard.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
 </body>
 
