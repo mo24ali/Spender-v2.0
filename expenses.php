@@ -61,6 +61,7 @@
                 $query = mysqli_query($conn, $request);
 
                 while ($row = mysqli_fetch_assoc($query)) {
+                    $id = $row['expenseId'];
                     echo "<tr>";
                     echo "<td>" . htmlspecialchars($row['expenseId']) . "</td>";
                     echo "<td>" . htmlspecialchars($row['expenseTitle']) . "</td>";
@@ -69,8 +70,8 @@
                     echo "<td>" . htmlspecialchars($row['dueDate']) . "</td>";
 
                     echo "<td>
-                        <button><a href='edit.php?id={$row['expenseId']}'>Edit</a></button>
-                        <button><a href='delete.php?id={$row['expenseId']}'>Delete</a></button>
+                        <button><a href='update_handlers/updateExpense.php?id={$id}'>Edit</a></button>
+                        <button><a href='delete_handlers/deleteExpense.php?id={$id}'>Delete</a></button>
                       </td>";
                     echo "</tr>";
                 }
