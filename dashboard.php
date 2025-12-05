@@ -5,14 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <title>Dashboard</title>
 </head>
 
-<?php
-
-?>
 
 
 <body class="bg-gray-50 dark:bg-gray-900 dark:text-white">
@@ -43,19 +39,170 @@
                 + New Payment
             </button>
         </div>
-        <p class="text-gray-600 dark:text-gray-300 text-xl">No data available yet — start by adding new payments.</p>
 
-        <div class="flex flex-row">
-            <div id="chart1">
+        <div class="grid grid-cols-3 grid-rows-3 gap-4 p-4">
 
+    <!-- TOTAL REVENUE -->
+    <div id="TotalRevenue">
+        <div class="bg-neutral-primary-soft w-full p-6 border border-default rounded-base shadow-xs">
+
+            <div class="flex justify-between items-center mb-3">
+                <h2 class="text-2xl font-semibold tracking-tight text-heading">My Balances</h2>
+                <select name="revenueMonth"
+                    class="rounded-xl px-2 py-1 bg-white dark:bg-gray-900 border">
+                    <option disabled selected>Select month</option>
+                    <option value="01">January</option>
+                    <option value="02">February</option>
+                    <option value="03">March</option>
+                    <option value="04">April</option>
+                    <option value="05">May</option>
+                    <option value="06">June</option>
+                    <option value="07">July</option>
+                    <option value="08">August</option>
+                    <option value="09">September</option>
+                    <option value="10">October</option>
+                    <option value="11">November</option>
+                    <option value="12">December</option>
+                </select>
             </div>
-            <div id="chart2">
 
-            </div>
-            <div id="chart3">
+            <p class="text-3xl font-bold mb-4 text-blue-600 dark:text-blue-400">
+                $
+                <?php
+                require "config/connexion.php";
+                $query = "select SUM(price) as total from income";
+                $request = mysqli_query($conn, $query);
+                $row = mysqli_fetch_assoc($request);
+                echo $row['total'];
+                ?>
+            </p>
 
+            <div class="flex items-center gap-3 text-sm text-body">
+                <p class="text-green-600 dark:text-green-400 font-medium">
+                    <i class="fa-solid fa-money-bill-trend-up"></i> minichart
+                </p>
+                <p>compared with the last month</p>
             </div>
         </div>
+    </div>
+
+
+    <!-- EXPENSES -->
+    <div id="Expenses">
+        <div class="bg-neutral-primary-soft w-full p-6 border border-default rounded-base shadow-xs">
+
+            <div class="flex justify-between items-center mb-3">
+                <h2 class="text-2xl font-semibold tracking-tight text-heading">My Expenses</h2>
+                <select name="expenseMonth"
+                    class="rounded-xl px-2 py-1 bg-white dark:bg-gray-900 border">
+                    <option disabled selected>Select month</option>
+                    <option value="01">January</option>
+                    <option value="02">February</option>
+                    <option value="03">March</option>
+                    <option value="04">April</option>
+                    <option value="05">May</option>
+                    <option value="06">June</option>
+                    <option value="07">July</option>
+                    <option value="08">August</option>
+                    <option value="09">September</option>
+                    <option value="10">October</option>
+                    <option value="11">November</option>
+                    <option value="12">December</option>
+                </select>
+            </div>
+
+            <p class="text-3xl font-bold mb-4 text-red-600 dark:text-red-400">
+                $
+                <?php
+                require "config/connexion.php";
+                $query = "select SUM(price) as total from expense";
+                $request = mysqli_query($conn, $query);
+                $row = mysqli_fetch_assoc($request);
+                echo $row['total'];
+                ?>
+            </p>
+
+            <div class="flex items-center gap-3 text-sm text-body">
+                <p class="text-red-500 dark:text-red-400 font-medium">
+                    <i class="fa-solid fa-money-bill-trend-up"></i> minichart
+                </p>
+                <p>compared with the last month</p>
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- INCOME -->
+    <div id="Income">
+        <div class="bg-neutral-primary-soft w-full p-6 border border-default rounded-base shadow-xs">
+
+            <div class="flex justify-between items-center mb-3">
+                <h2 class="text-2xl font-semibold tracking-tight text-heading">My Incomes</h2>
+                <select name="incomeMonth"
+                    class="rounded-xl px-2 py-1 bg-white dark:bg-gray-900 border">
+                    <option disabled selected>Select month</option>
+                    <option value="01">January</option>
+                    <option value="02">February</option>
+                    <option value="03">March</option>
+                    <option value="04">April</option>
+                    <option value="05">May</option>
+                    <option value="06">June</option>
+                    <option value="07">July</option>
+                    <option value="08">August</option>
+                    <option value="09">September</option>
+                    <option value="10">October</option>
+                    <option value="11">November</option>
+                    <option value="12">December</option>
+                </select>
+            </div>
+
+            <p class="text-3xl font-bold mb-4 text-green-600 dark:text-green-400">
+                $
+                <?php
+                require "config/connexion.php";
+                $query = "select SUM(price) as total from income";
+                $request = mysqli_query($conn, $query);
+                $row = mysqli_fetch_assoc($request);
+                echo $row['total'];
+                ?>
+            </p>
+
+            <div class="flex items-center gap-3 text-sm text-body">
+                <p class="text-green-500 dark:text-green-400 font-medium">
+                    <i class="fa-solid fa-money-bill-trend-up"></i> minichart
+                </p>
+                <p>compared with the last month</p>
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- CHART -->
+    <div class="col-span-2 bg-neutral-primary-soft border border-default rounded-base shadow-xs p-4 flex items-center justify-center">
+        <canvas id="chart" class="w-full h-64"></canvas>
+    </div>
+
+
+    <!-- ACTIVITIES -->
+    <div id="listOfActivities" class="bg-neutral-primary-soft border border-default rounded-base shadow-xs p-4 row-span-2">
+        Activities
+    </div>
+
+    <!-- SAVINGS -->
+    <div id="sevingsDiv" class="col-span-2 bg-neutral-primary-soft border border-default rounded-base shadow-xs p-4">
+        <div class="text-xl font-semibold mb-3">Savings</div>
+
+        <div id="savings" class="grid grid-cols-2 grid-rows-2 gap-3">
+            <div class="p-4 bg-white dark:bg-gray-800 rounded-base border border-default shadow-sm">sav1</div>
+            <div class="p-4 bg-white dark:bg-gray-800 rounded-base border border-default shadow-sm">sav2</div>
+            <div class="p-4 bg-white dark:bg-gray-800 rounded-base border border-default shadow-sm">sav3</div>
+            <div class="p-4 bg-white dark:bg-gray-800 rounded-base border border-default shadow-sm">sav4</div>
+        </div>
+    </div>
+
+</div>
 
     </main>
 
@@ -76,7 +223,7 @@
     <script src="js/auth.js"></script>
     <script src="js/forms.js"></script>
     <script src="js/validators.js"></script>
-    <script src="js/dashboard.js"></script>
+    <script src="js/chart.js"></script>
 
 </body>
 

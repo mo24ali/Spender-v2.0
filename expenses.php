@@ -45,43 +45,54 @@
 
 
 
-        <table border="2" cellspacing="2" cellpadding="8">
-            <thead>
-                <tr>
-                    <th>Expense ID</th>
-                    <th>Expense Title</th>
-                    <th>Description</th>
-                    <th>Price</th>
-                    <th>Due Date</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
+      <table class="w-full text-sm text-left rtl:text-right text-body border border-default rounded-lg overflow-hidden">
+    <thead class="bg-neutral-secondary-soft border-b border-default">
+        <tr>
+            <th class="px-6 py-3 font-medium">Expense ID</th>
+            <th class="px-6 py-3 font-medium">Expense Title</th>
+            <th class="px-6 py-3 font-medium">Description</th>
+            <th class="px-6 py-3 font-medium">Price</th>
+            <th class="px-6 py-3 font-medium">Due Date</th>
+            <th class="px-6 py-3 font-medium">Actions</th>
+        </tr>
+    </thead>
 
-            <tbody>
-                <?php
-                require "config/connexion.php";
+    <tbody>
+        <?php
+        require "config/connexion.php";
 
-                $request = "SELECT * FROM expense";
-                $query = mysqli_query($conn, $request);
+        $request = "SELECT * FROM expense";
+        $query = mysqli_query($conn, $request);
 
-                while ($row = mysqli_fetch_assoc($query)) {
-                    $id = $row['expenseId'];
-                    echo "<tr>";
-                    echo "<td>" . htmlspecialchars($row['expenseId']) . "</td>";
-                    echo "<td>" . htmlspecialchars($row['expenseTitle']) . "</td>";
-                    echo "<td>" . htmlspecialchars($row['description']) . "</td>";
-                    echo "<td>" . htmlspecialchars($row['price']) . "</td>";
-                    echo "<td>" . htmlspecialchars($row['dueDate']) . "</td>";
+        while ($row = mysqli_fetch_assoc($query)) {
+            $id = $row['expenseId'];
 
-                    echo "<td>
-                        <button><a href='update_handlers/updateExpense.php?id={$id}'>Edit</a></button>
-                        <button><a href='delete_handlers/deleteExpense.php?id={$id}'>Delete</a></button>
-                      </td>";
-                    echo "</tr>";
-                }
-                ?>
-            </tbody>
-        </table>
+            echo "<tr class='odd:bg-neutral-primary-soft even:bg-neutral-secondary-soft border-b border-default hover:bg-neutral-secondary transition'>";
+            
+            echo "<td class='px-6 py-3'>" . htmlspecialchars($row['expenseId']) . "</td>";
+            echo "<td class='px-6 py-3'>" . htmlspecialchars($row['expenseTitle']) . "</td>";
+            echo "<td class='px-6 py-3'>" . htmlspecialchars($row['description']) . "</td>";
+            echo "<td class='px-6 py-3'>$" . htmlspecialchars($row['price']) . "</td>";
+            echo "<td class='px-6 py-3'>" . htmlspecialchars($row['dueDate']) . "</td>";
+
+            echo "
+                <td class='px-6 py-3 flex gap-2'>
+                    <a href='update_handlers/updateExpense.php?id={$id}' 
+                       class='px-3 py-1 rounded-md bg-blue-500 text-white hover:bg-blue-600 transition text-xs'>
+                        Edit
+                    </a>
+                    <a href='delete_handlers/deleteExpense.php?id={$id}' 
+                       class='px-3 py-1 rounded-md bg-red-500 text-white hover:bg-red-600 transition text-xs'>
+                        Delete
+                    </a>
+                </td>
+            ";
+
+            echo "</tr>";
+        }
+        ?>
+    </tbody>
+</table>
 
 
 
