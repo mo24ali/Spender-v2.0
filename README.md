@@ -1,19 +1,19 @@
 # 💸 Spender – Personal Finance Dashboard (PHP & MySQL)
 
-Spender est une application simple et intuitive permettant aux utilisateurs de gérer leurs **revenus**, leurs **dépenses**, et d’obtenir une **vision claire de leur budget**.  
-Développée avec **PHP**, **MySQL**, **HTML/CSS** et un peu de **JavaScript**, cette application constitue un excellent projet pédagogique pour pratiquer les opérations **CRUD**, la gestion des formulaires, et l’organisation d’un mini tableau de bord financier.
+Spender est une application simple et intuitive permettant aux utilisateurs de gérer leurs **revenus**, leurs **dépenses**, et d'obtenir une **vision claire de leur budget**.  
+Développée avec **PHP**, **MySQL**, **HTML/CSS** et un peu de **JavaScript**, cette application constitue un excellent projet pédagogique pour pratiquer les opérations **CRUD**, la gestion des formulaires, et l'organisation d'un mini tableau de bord financier.
 
 ---
 
 ## 📌 Objectif du projet
 
-Ce projet est la première version d’un outil de gestion financière personnelle destiné à une startup locale.  
-L’objectif : fournir une interface simple permettant de :
+Ce projet est la première version d'un outil de gestion financière personnelle destiné à une startup locale.  
+L'objectif : fournir une interface simple permettant de :
 
-- Suivre les revenus
-- Suivre les dépenses
-- Calculer automatiquement le solde disponible
-- Afficher des statistiques financières basiques
+-   Suivre les revenus
+-   Suivre les dépenses
+-   Calculer automatiquement le solde disponible
+-   Afficher des statistiques financières basiques
 
 ---
 
@@ -47,7 +47,7 @@ L’objectif : fournir une interface simple permettant de :
 - Filtres par catégorie et par date
 - Export CSV ou PDF
 - Graphique mensuel (Chart.js / Google Charts)
-- Système d’authentification (Login / Register)
+- Système d'authentification (Login / Register)
 - Tri des tableaux (montant, date)
 
 ---
@@ -87,27 +87,27 @@ L’objectif : fournir une interface simple permettant de :
 
 ## 🛠️ Stack Technique
 
-| Technologie | Utilité |
-|------------|---------|
-| **PHP** | Backend, logique métier |
-| **MySQL** | Stockage des données |
-| **HTML / CSS** | Interface utilisateur |
-| **JavaScript** | Interactivité, graphique |
-| **Chart.js** (optionnel) | Visualisation des données |
-| **XAMPP / WAMP / LAMP** | Environnement serveur |
+| Technologie         | Utilité                           |
+| ------------------- | --------------------------------- |
+| **PHP**             | Backend, logique métier           |
+| **MySQL**           | Stockage des données              |
+| **HTML / CSS**      | Interface utilisateur             |
+| **JavaScript**      | Interactivité, graphique          |
+| **Chart.js** (optionnel) | Visualisation des données    |
+| **XAMPP / WAMP / LAMP** | Environnement serveur       |
 
 ---
 
 ## 📂 Structure du projet
-
 /Spender
-│── /config
-│── /models
-│── /controllers
-│── /views
-│── database.sql
-│── index.php
-│── README.md
+│ ├── /config
+│ ├── /models
+│ ├── /controllers
+│ ├── /views
+│ ├── database.sql
+│ ├── index.php
+│ └── README.md
+
 
 ---
 
@@ -117,37 +117,24 @@ L’objectif : fournir une interface simple permettant de :
 ```bash
 git clone https://github.com/mo24ali/Spender.git
 
-2️⃣ Créer la base de données
 
+Créer la base de données
 Ouvrir phpMyAdmin
 
 Créer une base (ex : spender)
 
 Importer database.sql
 
-3️⃣ Configurer la connexion MySQL
-
+Configurer la connexion MySQL
 Modifier config/connexion.php :
+
 
 $host = "localhost";
 $user = "root";
 $pass = "";
 $dbname = "spender";
-
 4️⃣ Lancer le projet
-
 Placer le projet dans htdocs/ (XAMPP) ou www/ (WAMP), puis ouvrir :
 
+
 http://localhost/Spender/
-
-🤝 Contribution
-
-Les contributions sont les bienvenues :
-
-Fork le repo
-
-Crée une branche : feature/ma-feature
-
-Commit
-
-Pull Request
