@@ -1,4 +1,4 @@
-DROP DATABASE IF EXISTS spender;
+DROP DATABASE IF EXISTS smart_wallet;
 
 CREATE DATABASE smart_wallet;
 
