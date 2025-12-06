@@ -1,31 +1,22 @@
 <?php
 session_start();
-
 require "../config/connexion.php";
-require "../models/user.php";
 
-if (!isset($_POST['emailLog']) || !isset($_POST['passwordLog'])) {
-    header("Location: ../index.php?error=missing_fields");
-    exit();
-}
+if (isset($_POST['connexion'])) {
+    $mail = $_POST['emailLog'];
+    $password = $_POST['passwordLog'];
 
-$email = $_POST['emailLog'];
-$password = $_POST['passwordLog'];
-
-$user = new User($conn);
-$loggedUser = $user->login($email, $password);
-
-if ($loggedUser) {
-    $_SESSION['user_id'] = $loggedUser['id'];
-    $_SESSION['email'] = $loggedUser['email'];
-
-    header("Location: ../dashboard.php");
-    exit();
-} else {
-    header("Location: ../index.php?error=invalid_credentials");
-    exit();
+    if ($mail != "" && $password != "") {
+        $query = mysqli_query($conn, "SELECT * FROM users WHERE email='$mail' AND password='$password'");
+        if (mysqli_num_rows($query) > 0) {
+            $_SESSION['user'] = mysqli_fetch_assoc($query);
+            echo "Login successful!";
+            header("Location: ../dashboard.php");
+        } else {
+            echo "Email ou mot de passe incorrect.";
+        }
+    } else {
+        echo "Mail et password sont obligatoires.";
+    }
 }
 ?>
-
-
-/**there is a proble in the user table */

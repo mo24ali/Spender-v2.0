@@ -1,29 +1,13 @@
-let form = document.getElementById("login")
-let regsiterForm = document.getElementById("register")
+document.addEventListener("DOMContentLoaded", () => {
+    const loginForm = document.getElementById("loginForm");
+    const registerForm = document.getElementById("register");
 
-function showLoginPopup(){
-    form.classList.toggle('hidden')
-}
+    window.showLoginPopup = function() {
+        loginForm.classList.toggle("hidden");
+    }
 
-// form.addEventListener('click',()=>{
-//     form.classList.add('hidden');
-// })
-
-// regsiterForm.addEventListener('click',()=>{
-//     regsiterForm.classList.add('hidden');
-// })
-// document.getElementById("registerFormPipe").addEventListener('click' , ()=>{
-//     form.classList.toggle('hidden');
-//     regsiterForm.classList.toggle('hidden');
-// })
-
-
-function formHandler(idForm){
-
-}
-
-
-
-function logout(){
-    
-}
+    document.getElementById("registerFormPipe").addEventListener("click", () => {
+        loginForm.classList.add("hidden");
+        registerForm.classList.remove("hidden");
+    });
+});
