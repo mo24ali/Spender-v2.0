@@ -1,55 +1,134 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<title>Spender</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+    <title>Spender</title>
+    <style>
+        .carousel img {
+            opacity: 0;
+            transform-origin: center center;
+            will-change: transform, opacity;
+        }
+
+        .desktop {
+            transform: translateY(30px) scale(0.95);
+        }
+
+        .mobile {
+            transform: translateX(-30px) scale(0.95);
+        }
+
+        .cards {
+            transform: translateX(30px) scale(0.95);
+        }
+
+        #wrapper {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #content {
+            width: 100%;
+            max-width: 1200px;
+        }
+    </style>
 </head>
+
 <body class="bg-gray-50 dark:bg-gray-900">
 
-<!-- NAVBAR -->
-<header class="sticky top-0 z-50 bg-white dark:bg-gray-800 shadow-sm">
-    <nav class="max-w-7xl mx-auto flex items-center justify-between p-4">
-        <a href="#" class="text-xl font-bold text-blue-600 dark:text-white">Spender</a>
-        <div class="hidden lg:flex space-x-10">
-                <a href="dashboard.php" class="text-gray-700 dark:text-gray-200 hover:text-blue-600">Dashboard</a>
-                <a href="transactions.php" class="text-gray-700 dark:text-gray-200 hover:text-blue-600">Transactions</a>
-                <a href="expenses.php" class="text-gray-700 dark:text-gray-200 hover:text-blue-600">Expenses</a>
-                <a href="incomes.php" class="text-gray-700 dark:text-gray-200 hover:text-blue-600">Incomes</a>
-                <a href="support.php" class="text-gray-700 dark:text-gray-200 hover:text-blue-600">Support</a>
+    <header class="sticky top-0 z-50 bg-white dark:bg-gray-800 shadow-sm opacity-0 translate-y-[-50px]" id="navbar">
+        <nav class="max-w-7xl mx-auto flex items-center justify-between p-4">
+            <a href="index.php" class="text-2xl font-bold text-blue-600 dark:text-white">Spender</a>
+
+            <div class="hidden lg:flex space-x-10">
+                <a href="dashboard.php" class="text-gray-700 dark:text-gray-200 hover:text-blue-600 transition">Dashboard</a>
+                <a href="transactions.php" class="text-gray-700 dark:text-gray-200 hover:text-blue-600 transition">Transactions</a>
+                <a href="expenses.php" class="text-gray-700 dark:text-gray-200 hover:text-blue-600 transition">Expenses</a>
+                <a href="incomes.php" class="text-gray-700 dark:text-gray-200 hover:text-blue-600 transition">Incomes</a>
+                <a href="support.php" class="text-gray-700 dark:text-gray-200 hover:text-blue-600 transition">Support</a>
             </div>
-        <button onclick="showLoginPopup()" class="bg-blue-600 px-4 py-2 rounded-lg text-white hover:bg-blue-500 transition">
-            Login / Register
-        </button>
-    </nav>
-</header>
 
-<!-- LOGIN MODAL -->
-<div id="loginForm" class="fixed inset-0 bg-black/40 backdrop-blur-sm flex justify-center items-center z-50 hidden">
-    <form class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg w-80 space-y-4"
-          action="auth/loginFormHandler.php" method="POST">
-        <h2 class="text-xl font-bold text-center dark:text-white">Login</h2>
-        <input id="logMail" type="text" name="emailLog" placeholder="Email" class="w-full p-2 border rounded-lg dark:bg-gray-900 dark:text-white">
-        <input id="logPass" type="password" name="passwordLog" placeholder="Password" class="w-full p-2 border rounded-lg dark:bg-gray-900 dark:text-white">
-        <input type="submit" class="w-full bg-blue-600 hover:bg-blue-500 text-white py-2 rounded-lg transition" value="Connexion" name="connexion">
-        <a id="registerFormPipe" class="text-blue-600 hover:underline text-center cursor-pointer block">Create an account →</a>
-    </form>
-</div>
+            <button id="loginBtn" class="hidden lg:inline-block bg-blue-600 px-4 py-2 rounded-lg text-white hover:bg-blue-500 transition lg:ml-4">
+                Login / Register
+            </button>
 
-<!-- REGISTER MODAL -->
-<div id="register" class="fixed inset-0 bg-black/40 backdrop-blur-md flex justify-center items-center z-50 hidden">
-    <form class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg w-96 space-y-4"
-          action="auth/registerFormHandler.php" method="POST">
-        <h2 class="text-xl font-bold text-center dark:text-white">Register</h2>
-        <input type="text" name="firstname" placeholder="Firstname" class="w-full p-2 border rounded-lg dark:bg-gray-900 dark:text-white">
-        <input type="text" name="lastname" placeholder="Lastname" class="w-full p-2 border rounded-lg dark:bg-gray-900 dark:text-white">
-        <input type="text" name="emailRegister" placeholder="Email" class="w-full p-2 border rounded-lg dark:bg-gray-900 dark:text-white">
-        <input type="password" name="passwordRegister" placeholder="Password" class="w-full p-2 border rounded-lg dark:bg-gray-900 dark:text-white">
-        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-500 text-white py-2 rounded-lg transition">Register</button>
-    </form>
-</div>
+            <button id="burgerBtn" class="lg:hidden ml-2 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600">
+                <svg class="w-6 h-6 text-gray-700 dark:text-gray-200" fill="none" stroke="currentColor" stroke-width="2"
+                    viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
 
-<script src="js/auth.js" defer></script>
+            <div id="mobileMenu" class="hidden absolute top-full left-0 w-full bg-white dark:bg-gray-800 shadow-md flex flex-col lg:hidden">
+                <a href="dashboard.php" class="px-4 py-3 border-b border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white">Dashboard</a>
+                <a href="transactions.php" class="px-4 py-3 border-b border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white">Transactions</a>
+                <a href="expenses.php" class="px-4 py-3 border-b border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white">Expenses</a>
+                <a href="incomes.php" class="px-4 py-3 border-b border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white">Incomes</a>
+                <a href="support.php" class="px-4 py-3 border-b border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white">Support</a>
+
+                <!-- Login button inside mobile menu -->
+                <button id="mobileLoginBtn" class="mx-4 my-3 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-500 transition">
+                    Login / Register
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="max-w-7xl mx-auto p-6 mt-10 opacity-100" id="hero">
+        <h1 class="text-4xl font-bold text-gray-800 dark:text-white mb-4">Welcome to Spender 👋</h1>
+        <p class="text-gray-600 dark:text-gray-300">Track your income and expenses easily and visually, <br> in the most Minimalized way.</p>
+    </section>
+
+
+    <div id="wrapper" class="overflow-hidden w-full h-[500px] relative">
+        <div id="content" class="space-y-20 p-10">
+
+            <div class="carousel w-full h-full relative flex justify-center items-center">
+                <img src="assets/desktop.png" alt="Desktop" class="desktop w-1/2 object-cover rounded-xl shadow-lg">
+                <img src="assets/mobile.png" alt="Mobile" class="mobile w-1/6 rounded-xl shadow-lg">
+                <img src="assets/credit_cards.png" alt="Cards" class="cards w-1/4 rounded-xl shadow-lg">
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- LOGIN MODAL -->
+    <div id="loginForm" class="fixed inset-0 bg-black/40 backdrop-blur-sm flex justify-center items-center z-50 hidden">
+        <form class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg w-80 space-y-4"
+            action="auth/loginFormHandler.php" method="POST">
+            <h2 class="text-xl font-bold text-center dark:text-white">Login</h2>
+            <input id="logMail" type="text" name="emailLog" placeholder="Email" class="w-full p-2 border rounded-lg dark:bg-gray-900 dark:text-white">
+            <input id="logPass" type="password" name="passwordLog" placeholder="Password" class="w-full p-2 border rounded-lg dark:bg-gray-900 dark:text-white">
+            <input type="submit" class="w-full bg-blue-600 hover:bg-blue-500 text-white py-2 rounded-lg transition" value="Connexion" name="connexion">
+            <a id="registerFormPipe" class="text-blue-600 hover:underline text-center cursor-pointer block">Create an account →</a>
+        </form>
+    </div>
+
+    <!-- REGISTER MODAL -->
+    <div id="register" class="fixed inset-0 bg-black/40 backdrop-blur-md flex justify-center items-center z-50 hidden">
+        <form class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg w-96 space-y-4"
+            action="auth/registerFormHandler.php" method="POST">
+            <h2 class="text-xl font-bold text-center dark:text-white">Register</h2>
+            <input type="text" name="firstname" placeholder="Firstname" class="w-full p-2 border rounded-lg dark:bg-gray-900 dark:text-white">
+            <input type="text" name="lastname" placeholder="Lastname" class="w-full p-2 border rounded-lg dark:bg-gray-900 dark:text-white">
+            <input type="text" name="emailRegister" placeholder="Email" class="w-full p-2 border rounded-lg dark:bg-gray-900 dark:text-white">
+            <input type="password" name="passwordRegister" placeholder="Password" class="w-full p-2 border rounded-lg dark:bg-gray-900 dark:text-white">
+            <button type="submit" class="w-full bg-blue-600 hover:bg-blue-500 text-white py-2 rounded-lg transition">Register</button>
+        </form>
+    </div>
+    <script>
+
+    </script>
+    <script src="js/landing.js" defer></script>
+    <script src="js/auth.js" defer></script>
 </body>
+
 </html>

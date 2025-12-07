@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
 
     <script src="js/forms.js"></script>
     <script src="js/auth.js"></script>
@@ -16,25 +17,23 @@
 <body class="bg-gray-50 dark:bg-gray-900 dark:text-white">
 
     <!-- NAVBAR -->
-    <header class="sticky top-0 z-50 bg-white dark:bg-gray-800 shadow-sm">
-        <nav class="max-w-7xl mx-auto flex items-center justify-between p-4">
-            <a href="#" class="text-xl font-bold text-blue-600 dark:text-white">Spender</a>
-
-            <div class="hidden lg:flex space-x-10">
-                <a href="dashboard.php" class="text-gray-700 dark:text-gray-200 hover:text-blue-600">Dashboard</a>
-                <a href="transactions.php" class="text-gray-700 dark:text-gray-200 hover:text-blue-600">Transactions</a>
-                <a href="expenses.php" class="text-gray-700 dark:text-gray-200 hover:text-blue-600">Expenses</a>
-                <a href="incomes.php" class="text-gray-700 dark:text-gray-200 hover:text-blue-600">Incomes</a>
-                <a href="support.php" class="text-gray-700 dark:text-gray-200 hover:text-blue-600">Support</a>
-            </div>
-
-             <a href="auth/logout.php">
-                <button class="hidden lg:block bg-blue-600 px-4 py-2 rounded-lg text-white hover:bg-blue-500 transition">
-                Logout
+    <header class="sticky top-0 z-50 bg-white dark:bg-gray-800 shadow-sm opacity-0 translate-y-[-50px]" id="navbar">
+    <nav class="max-w-7xl mx-auto flex items-center justify-between p-4">
+        <a href="index.php" class="text-2xl font-bold text-blue-600 dark:text-white">Spender</a>
+        <div class="hidden lg:flex space-x-10">
+            <a href="dashboard.php" class="text-gray-700 dark:text-gray-200 hover:text-blue-600 transition">Dashboard</a>
+            <a href="transactions.php" class="text-gray-700 dark:text-gray-200 hover:text-blue-600 transition">Transactions</a>
+            <a href="expenses.php" class="text-gray-700 dark:text-gray-200 hover:text-blue-600 transition">Expenses</a>
+            <a href="incomes.php" class="text-gray-700 dark:text-gray-200 hover:text-blue-600 transition">Incomes</a>
+            <a href="support.php" class="text-gray-700 dark:text-gray-200 hover:text-blue-600 transition">Support</a>
+        </div>
+        <a href="auth/logout.php">
+                <button id="" class="bg-blue-600 px-4 py-2 rounded-lg text-white hover:bg-blue-500 transition">
+                    Logout
                 </button>
             </a>
-        </nav>
-    </header>
+    </nav>
+</header>
 
     <!-- MAIN CONTENT -->
     <main class="max-w-6xl mx-auto mt-20 px-4">
@@ -152,7 +151,17 @@
 
     </div>
 
+ <script>
+        // GSAP Animations
 
+        // Navbar slide-in
+        gsap.to("#navbar", {
+            duration: 1,
+            y: 0,
+            opacity: 1,
+            ease: "power2.out"
+        });
+        </script>
 </body>
 
 
