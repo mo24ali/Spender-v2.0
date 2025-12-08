@@ -83,23 +83,68 @@
     </header>
 
     <!-- HERO SECTION -->
-    <section class="max-w-7xl mx-auto p-6 mt-10 opacity-100" id="hero">
-        <h1 class="text-4xl font-bold text-gray-800 dark:text-white mb-4">Welcome to Spender 👋</h1>
-        <p class="text-gray-600 dark:text-gray-300">Track your income and expenses easily and visually, <br> in the most Minimalized way.</p>
+    <!-- HERO SECTION -->
+    <section id="hero"
+        class="max-w-7xl mx-auto px-6 py-16 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+
+        <!-- LEFT CONTENT -->
+        <div class="flex flex-col space-y-6">
+            <h1 class="text-5xl font-extrabold text-gray-800 dark:text-white leading-tight">
+                Manage Your Money <span class="text-indigo-500">Smarter with SPENDER</span> 💸
+            </h1>
+
+            <p class="text-lg text-gray-600 dark:text-gray-300 max-w-lg">
+                Track your income and expenses effortlessly with beautiful charts and a minimal dashboard designed for clarity.
+            </p>
+
+            <div class="flex gap-4">
+                <a href="#"
+                    class="px-6 py-3 bg-indigo-600 text-white rounded-xl shadow-md hover:bg-indigo-700 transition">
+                    Get Started
+                </a>
+
+                <a href="#"
+                    class="px-6 py-3 border border-gray-300 text-gray-700 dark:text-white rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition">
+                    View Demo
+                </a>
+            </div>
+        </div>
+
+        <!-- RIGHT VISUAL -->
+        <!-- <div class="relative flex justify-center md:justify-end">
+            <div id="wrapper"
+                class="relative w-full md:w-[500px] h-[280px] overflow-hidden rounded-2xl  dark:bg-white dark:to-gray-900 shadow-xl flex items-center justify-center">
+
+                <div class="carousel relative w-[500px] h-[250px] flex items-center justify-center">
+                    <img src="assets/desktop.png"
+                        class="w-[40%] object-cover rounded-xl shadow-2xl z-20"
+                        alt="Desktop UI">
+
+                    <img src="assets/mobile.png"
+                        class="w-[22%] absolute left-4 bottom-2 rounded-xl shadow-lg z-30"
+                        alt="Mobile UI">
+
+                    <img src="assets/credit_cards.png"
+                        class="w-[35%] absolute right-2 top-4 rounded-xl shadow-lg z-10"
+                        alt="Cards UI">
+                </div>
+            </div>
+        </div> -->
+        <div id="wrapper" class="overflow-hidden w-[1000px] h-[500px] relative">
+            <div id="content" class="space-y-20 p-10">
+                <div class="carousel w-full h-full relative flex justify-center items-center">
+                    <img src="assets/desktop.png" alt="Desktop" class="desktop w-1/2 object-cover rounded-xl shadow-lg">
+                    <img src="assets/mobile.png" alt="Mobile" class="mobile w-1/6 rounded-xl shadow-lg"> 
+                    <img src="assets/credit_cards.png" alt="Cards" class="cards w-1/4 rounded-xl shadow-lg"> 
+                </div>
+            </div>
+        </div>
+
     </section>
 
 
-    <div id="wrapper" class="overflow-hidden w-full h-[500px] relative">
-        <div id="content" class="space-y-20 p-10">
 
-            <div class="carousel w-full h-full relative flex justify-center items-center">
-                <img src="assets/desktop.png" alt="Desktop" class="desktop w-1/2 object-cover rounded-xl shadow-lg">
-                <img src="assets/mobile.png" alt="Mobile" class="mobile w-1/6 rounded-xl shadow-lg">
-                <img src="assets/credit_cards.png" alt="Cards" class="cards w-1/4 rounded-xl shadow-lg">
-            </div>
 
-        </div>
-    </div>
 
 
     <!-- LOGIN MODAL -->
@@ -129,7 +174,7 @@
     <script>
 
     </script>
-    
+
 </body>
 
 </html>
