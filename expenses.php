@@ -81,7 +81,8 @@
                         <option value="entertainment">Entertainment</option>
                         <option value="other">Other</option>
                     </select>
-
+                    Sort by price:
+                    <input type="checkbox" placeholder="sort by price" name="priceFilter">
                     <button type="submit"
                         class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-500 transition duration-200">
                         Apply
@@ -111,6 +112,10 @@
                 $userId = $_SESSION['user_id'];
                 $catergory;
                 $monthFilter;
+                $priceSort;
+                if(isset($_GET['priceFilter'])){
+                    $priceSort = $_GET['priceFilter'];
+                }
                 if (isset($_GET['expenseCategory'])) {
                     $catergory = $_GET['expenseCategory'];
                 }
@@ -119,13 +124,17 @@
                 }
                 $catergoryCondition = "";
                 $monthCondition = "";
+                $priceSortCondition = "";
+                if(isset($priceSort)){
+                        $priceSortCondition = "ORDER BY PRICE desc";
+                }
                 if (isset($catergory)) {
                     $catergoryCondition = "AND categorie= '$catergory'";
                 }
                 if (isset($monthFilter)) {
                     $monthCondition = "AND MONTH(dueDate) = '$monthFilter'";
                 }
-                $request = "SELECT * FROM expense where user_id=$userId $catergoryCondition $monthCondition";
+                $request = "SELECT * FROM expense where user_id=$userId $catergoryCondition $monthCondition $priceSortCondition";
                 $query = mysqli_query($conn, $request);
 
                 while ($row = mysqli_fetch_assoc($query)) {

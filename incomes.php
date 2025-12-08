@@ -43,16 +43,13 @@
             <p class="text-gray-700 dark:text-gray-300 text-xl font-semibold">Liste des Incomes:</p>
 
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                <!-- New Income Button -->
                 <button id="newPaymentsBtn"
                     class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-500 transition duration-200"
                     onclick="showAddIncome()">
                     + New Income
                 </button>
 
-                <!-- Filters Form -->
                 <form class="flex flex-col sm:flex-row items-center gap-2" method="get">
-                    <!-- Month Filter -->
                     <select id="incomeMonth" name="incomeMonth"
                         class="bg-gray-700 text-white px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400">
                         <option value="" disabled selected>Filter by Month</option>
@@ -70,7 +67,6 @@
                         <option value="12">December</option>
                     </select>
 
-                    <!-- Category Filter -->
                     <select id="incomeCategory" name="incomeCategory"
                         class="bg-gray-700 text-white px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400">
                         <option value="" disabled selected>Filter by Category</option>
@@ -82,7 +78,8 @@
                         <option value="other">Other</option>
                     </select>
 
-                    <!-- Optional Submit Button -->
+                    Sort by price:
+                    <input type="checkbox" placeholder="sort by price" name="priceFilter">
                     <button type="submit"
                         class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-500 transition duration-200">
                         Apply
@@ -113,6 +110,10 @@
                 $userId = $_SESSION['user_id'];
                 $catergory ;
                 $monthFilter ;
+                $priceSort;
+                if(isset($_GET['priceFilter'])){
+                    $priceSort = $_GET['priceFilter'];
+                }
                 if (isset($_GET['incomeCategory'])) {
                     $catergory = $_GET['incomeCategory'];
                 }
@@ -121,6 +122,10 @@
                 }
                 $catergoryCondition = "";
                 $monthCondition = "";
+                $priceSortCondition = "";
+                if(isset($priceSort)){
+                    $priceSortCondition = "ORDER BY price desc";
+                }
                 if (isset($catergory)) {
                     $catergoryCondition = "AND categorie= '$catergory'";
                 }
@@ -128,7 +133,7 @@
                     $monthCondition = "AND MONTH(getIncomeDate) = '$monthFilter'";
                 }
 
-                $request = "SELECT * FROM income where user_id=$userId $catergoryCondition $monthCondition";
+                $request = "SELECT * FROM income where user_id=$userId $catergoryCondition $monthCondition $priceSortCondition";
                 $query = mysqli_query($conn, $request);
 
                 while ($row = mysqli_fetch_assoc($query)) {
