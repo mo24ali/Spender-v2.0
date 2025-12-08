@@ -130,9 +130,9 @@
                 </div>
             </div>
         </div> -->
-        <div id="wrapper" class="overflow-hidden w-[1000px] h-[500px] relative">
+        <div id="wrapper" class="overflow-hidden w-[750] h-[500px] relative">
             <div id="content" class="space-y-20 p-10">
-                <div class="carousel w-full h-full relative flex justify-center items-center">
+                <div class="carousel w-[750] h-[500px] relative flex justify-center items-center">
                     <img src="assets/desktop.png" alt="Desktop" class="desktop w-1/2 object-cover rounded-xl shadow-lg">
                     <img src="assets/mobile.png" alt="Mobile" class="mobile w-1/6 rounded-xl shadow-lg"> 
                     <img src="assets/credit_cards.png" alt="Cards" class="cards w-1/4 rounded-xl shadow-lg"> 

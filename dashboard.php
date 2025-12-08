@@ -31,7 +31,7 @@
                     Logout
                 </button>
             </a>
-             <button id="burgerBtn" class="lg:hidden ml-2 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600">
+            <button id="burgerBtn" class="lg:hidden ml-2 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600">
                 <svg class="w-6 h-6 text-gray-700 dark:text-gray-200" fill="none" stroke="currentColor" stroke-width="2"
                     viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M4 6h16M4 12h16M4 18h16"></path>
@@ -46,10 +46,10 @@
                 <a href="support.php" class="px-4 py-3 border-b border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white">Support</a>
 
                 <a href="auth/logout.php">
-                <button id="" class="mx-4 my-3 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-500 transition">
-                    Logout
-                </button>
-            </a>
+                    <button id="" class="mx-4 my-3 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-500 transition">
+                        Logout
+                    </button>
+                </a>
             </div>
         </nav>
     </header>
@@ -75,12 +75,32 @@
                 </span>
             </h1>
 
-            <button
+            <div class="flex flex-col lg:flex-row justify-center items-center gap-2">
+                <button
                 id="newPaymentsBtn"
                 class="bg-blue-600 text-white px-4 sm:px-5 py-2.5 rounded-xl font-semibold hover:bg-blue-500 transition duration-200 shadow-sm"
                 onclick="showAddExpenseModal()">
                 + New Expense
             </button>
+            <form method="get">
+                <select name="revenueMonth" onchange="this.form.submit()"
+                    class="text-white px-4 sm:px-5 py-2.5 rounded-xl font-semibold bg-white dark:bg-gray-900 border">
+                    <option disabled selected>Select month</option>
+                    <option value="01">January</option>
+                    <option value="02">February</option>
+                    <option value="03">March</option>
+                    <option value="04">April</option>
+                    <option value="05">May</option>
+                    <option value="06">June</option>
+                    <option value="07">July</option>
+                    <option value="08">August</option>
+                    <option value="09">September</option>
+                    <option value="10">October</option>
+                    <option value="11">November</option>
+                    <option value="12">December</option>
+                </select>
+            </form>
+            </div>
         </div>
 
 
@@ -97,30 +117,20 @@
 
                     <div class="flex justify-between items-center mb-3">
                         <h2 class="text-2xl font-semibold tracking-tight text-heading">My Balances</h2>
-                        <select name="revenueMonth"
-                            class="rounded-xl px-2 py-1 bg-white dark:bg-gray-900 border">
-                            <option disabled selected>Select month</option>
-                            <option value="01">January</option>
-                            <option value="02">February</option>
-                            <option value="03">March</option>
-                            <option value="04">April</option>
-                            <option value="05">May</option>
-                            <option value="06">June</option>
-                            <option value="07">July</option>
-                            <option value="08">August</option>
-                            <option value="09">September</option>
-                            <option value="10">October</option>
-                            <option value="11">November</option>
-                            <option value="12">December</option>
-                        </select>
+
                     </div>
 
                     <p class="text-3xl font-bold mb-4 text-blue-600 dark:text-blue-400">
                         $
                         <?php
                         require "config/connexion.php";
+                        $month = isset($_GET['revenueMonth']) ? $_GET['revenueMonth'] : null;
+                        $monthCondition = "";
+                        if ($month) {
+                            $monthCondition = "AND MONTH(i.getIncomeDate) = '$month' AND MONTH(e.dueDate) = '$month'";
+                        }
                         $userId = $_SESSION['user_id'];
-                        $query = "select SUM(i.price)-SUM(e.price) as total from income i ,expense e where i.user_id =$userId AND e.user_id=$userId ";
+                        $query = "select SUM(i.price)-SUM(e.price) as total from income i ,expense e where i.user_id =$userId AND e.user_id=$userId $monthCondition";
                         $request = mysqli_query($conn, $query);
                         $row = mysqli_fetch_assoc($request);
                         echo $row['total'];
@@ -143,22 +153,8 @@
 
                     <div class="flex justify-between items-center mb-3">
                         <h2 class="text-2xl font-semibold tracking-tight text-heading">My Expenses</h2>
-                        <select name="expenseMonth"
-                            class="rounded-xl px-2 py-1 bg-white dark:bg-gray-900 border">
-                            <option disabled selected>Select month</option>
-                            <option value="01">January</option>
-                            <option value="02">February</option>
-                            <option value="03">March</option>
-                            <option value="04">April</option>
-                            <option value="05">May</option>
-                            <option value="06">June</option>
-                            <option value="07">July</option>
-                            <option value="08">August</option>
-                            <option value="09">September</option>
-                            <option value="10">October</option>
-                            <option value="11">November</option>
-                            <option value="12">December</option>
-                        </select>
+
+
                     </div>
 
                     <p class="text-3xl font-bold mb-4 text-red-600 dark:text-red-400">
@@ -166,7 +162,13 @@
                         <?php
                         require "config/connexion.php";
                         $userId = $_SESSION['user_id'];
-                        $query = "select SUM(price) as total from expense where user_id=$userId";
+                        $month = isset($_GET['revenueMonth']) ? $_GET['revenueMonth'] : null;
+
+                        $monthCondition = "";
+                        if ($month) {
+                            $monthCondition = "AND MONTH(dueDate) = '$month'";
+                        }
+                        $query = "select SUM(price) as total from expense where user_id=$userId $monthCondition";
                         $request = mysqli_query($conn, $query);
                         $row = mysqli_fetch_assoc($request);
                         echo $row['total'];
@@ -190,22 +192,7 @@
 
                     <div class="flex justify-between items-center mb-3">
                         <h2 class="text-2xl font-semibold tracking-tight text-heading">My Incomes</h2>
-                        <select name="incomeMonth"
-                            class="rounded-xl px-2 py-1 bg-white dark:bg-gray-900 border">
-                            <option disabled selected>Select month</option>
-                            <option value="01">January</option>
-                            <option value="02">February</option>
-                            <option value="03">March</option>
-                            <option value="04">April</option>
-                            <option value="05">May</option>
-                            <option value="06">June</option>
-                            <option value="07">July</option>
-                            <option value="08">August</option>
-                            <option value="09">September</option>
-                            <option value="10">October</option>
-                            <option value="11">November</option>
-                            <option value="12">December</option>
-                        </select>
+
                     </div>
 
                     <p class="text-3xl font-bold mb-4 text-green-600 dark:text-green-400">
@@ -213,7 +200,13 @@
                         <?php
                         require "config/connexion.php";
                         $userId = $_SESSION['user_id'];
-                        $query = "select SUM(price) as total from income where user_id=$userId";
+                        $month = isset($_GET['revenueMonth']) ? $_GET['revenueMonth'] : null;
+
+                        $monthCondition = "";
+                        if ($month) {
+                            $monthCondition = "AND MONTH(getIncomeDate) = '$month'";
+                        }
+                        $query = "select SUM(price) as total from income where user_id=$userId $monthCondition";
                         $request = mysqli_query($conn, $query);
                         $row = mysqli_fetch_assoc($request);
                         echo $row['total'];
