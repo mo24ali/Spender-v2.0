@@ -15,7 +15,10 @@
 
 
 <body class="bg-gray-50 dark:bg-gray-900 dark:text-white">
+    <?php
+    session_start();
 
+    ?>
     <!-- NAVBAR -->
     <header class="sticky top-0 z-50 bg-white dark:bg-gray-800 shadow-sm opacity-0 translate-y-[-50px]" id="navbar">
         <nav class="max-w-7xl mx-auto flex items-center justify-between p-4">
@@ -34,14 +37,57 @@
             </a>
         </nav>
     </header>
-
+    
     <!-- MAIN CONTENT -->
     <main class="max-w-6xl mx-auto mt-20 px-4">
-        <div class="flex items-center justify-between mb-10">
-            <button id="newPaymentsBtn" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-500 transition" onclick="showAddExpenseModal()">
-                + New Payment
-            </button>
-            <p class="text-gray-600 dark:text-gray-300 text-xl">Liste des dépenses : </p>
+        <div class="flex flex-col mb-10 space-y-4">
+            <p class="text-gray-700 dark:text-gray-300 text-xl font-semibold">Liste des Dépences:</p>
+
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <!-- New Income Button -->
+                <button id="newPaymentsBtn"
+                    class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-500 transition duration-200"
+                    onclick="showAddExpenseModal()">
+                    + New Expense
+                </button>
+
+                <!-- Filters Form -->
+                <form class="flex flex-col sm:flex-row items-center gap-2" method="get">
+                    <select id="expenseMonth" name="expenseMonth"
+                        class="bg-gray-700 text-white px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400">
+                        <option value="" disabled selected>Filter by Month</option>
+                        <option value="01">January</option>
+                        <option value="02">February</option>
+                        <option value="03">March</option>
+                        <option value="04">April</option>
+                        <option value="05">May</option>
+                        <option value="06">June</option>
+                        <option value="07">July</option>
+                        <option value="08">August</option>
+                        <option value="09">September</option>
+                        <option value="10">October</option>
+                        <option value="11">November</option>
+                        <option value="12">December</option>
+                    </select>
+
+                    <select id="expenseCategory" name="expenseCategory"
+                        class="bg-gray-700 text-white px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400">
+                        <option value="" disabled selected>Filter by Category</option>
+                        <option value="food">Food</option>
+                        <option value="transport">Transport</option>
+                        <option value="bills">Bills</option>
+                        <option value="shopping">Shopping</option>
+                        <option value="health">Health</option>
+                        <option value="entertainment">Entertainment</option>
+                        <option value="other">Other</option>
+                    </select>
+
+                    <button type="submit"
+                        class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-500 transition duration-200">
+                        Apply
+                    </button>
+                </form>
+            </div>
         </div>
 
 
@@ -61,10 +107,25 @@
 
             <tbody>
                 <?php
-                session_start();
                 require "config/connexion.php";
                 $userId = $_SESSION['user_id'];
-                $request = "SELECT * FROM expense where user_id=$userId";
+                $catergory;
+                $monthFilter;
+                if (isset($_GET['expenseCategory'])) {
+                    $catergory = $_GET['expenseCategory'];
+                }
+                if (isset($_GET['expenseMonth'])) {
+                    $monthFilter = $_GET['expenseMonth'];
+                }
+                $catergoryCondition = "";
+                $monthCondition = "";
+                if (isset($catergory)) {
+                    $catergoryCondition = "AND categorie= '$catergory'";
+                }
+                if (isset($monthFilter)) {
+                    $monthCondition = "AND MONTH(dueDate) = '$monthFilter'";
+                }
+                $request = "SELECT * FROM expense where user_id=$userId $catergoryCondition $monthCondition";
                 $query = mysqli_query($conn, $request);
 
                 while ($row = mysqli_fetch_assoc($query)) {
@@ -145,7 +206,7 @@
                 class="w-full p-2 rounded-lg border dark:bg-gray-900 dark:text-white">
 
                 <option value="" disabled selected>Select category</option>
-
+                <!-- food transport bills  shopping  health entertainment other-->
                 <option value="food" <?php if (($expense['categorie'] ?? '') == 'food') echo 'selected'; ?>>Food</option>
                 <option value="transport" <?php if (($expense['categorie'] ?? '') == 'transport') echo 'selected'; ?>>Transport</option>
                 <option value="bills" <?php if (($expense['categorie'] ?? '') == 'bills') echo 'selected'; ?>>Bills</option>
