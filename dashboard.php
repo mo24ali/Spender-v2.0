@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <title>Dashboard</title>
 </head>
@@ -77,29 +77,36 @@
 
             <div class="flex flex-col lg:flex-row justify-center items-center gap-2">
                 <button
-                id="newPaymentsBtn"
-                class="bg-blue-600 text-white px-4 sm:px-5 py-2.5 rounded-xl font-semibold hover:bg-blue-500 transition duration-200 shadow-sm"
-                onclick="showAddExpenseModal()">
-                + New Expense
-            </button>
-            <form method="get">
-                <select name="revenueMonth" onchange="this.form.submit()"
-                    class="text-white px-4 sm:px-5 py-2.5 rounded-xl font-semibold bg-white dark:bg-gray-900 border">
-                    <option disabled selected>Select month</option>
-                    <option value="01">January</option>
-                    <option value="02">February</option>
-                    <option value="03">March</option>
-                    <option value="04">April</option>
-                    <option value="05">May</option>
-                    <option value="06">June</option>
-                    <option value="07">July</option>
-                    <option value="08">August</option>
-                    <option value="09">September</option>
-                    <option value="10">October</option>
-                    <option value="11">November</option>
-                    <option value="12">December</option>
-                </select>
-            </form>
+                    id="newPaymentsBtn"
+                    class="bg-blue-600 text-white px-4 sm:px-5 py-2.5 rounded-xl font-semibold hover:bg-blue-500 transition duration-200 shadow-sm"
+                    onclick="showAddExpenseModal()">
+                    + New Expense
+                </button>
+                <form method="get">
+                    <select name="revenueMonth" onchange="this.form.submit()"
+                        class="text-white px-4 sm:px-5 py-2.5 rounded-xl font-semibold bg-white dark:bg-gray-900 border">
+                        <option disabled selected>Select month</option>
+                        <option value="01">January</option>
+                        <option value="02">February</option>
+                        <option value="03">March</option>
+                        <option value="04">April</option>
+                        <option value="05">May</option>
+                        <option value="06">June</option>
+                        <option value="07">July</option>
+                        <option value="08">August</option>
+                        <option value="09">September</option>
+                        <option value="10">October</option>
+                        <option value="11">November</option>
+                        <option value="12">December</option>
+                    </select>
+                </form>
+                <button id="exportCsv"
+                    class="text-white px-4 sm:px-5 py-2.5 rounded-xl font-semibold bg-white dark:bg-gray-900 border hover:bg-white hover:text-black transform duration-300">
+                   <a href="export/exportcsv.php"> 
+                     Export csv   
+                    <i class="fa fa-download"></i>
+                   </a>
+                </button>
             </div>
         </div>
 
