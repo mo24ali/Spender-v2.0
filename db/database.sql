@@ -48,6 +48,7 @@ CREATE TABLE expense (
     price DECIMAL(10, 2) NOT NULL,
     categorie TEXT,
     dueDate DATE,
+    isRecurent ENUM('YES','NO'),
     state VARCHAR(20) DEFAULT 'not paid',
     CONSTRAINT fk_expense_user FOREIGN KEY (user_id) REFERENCES users (userId)
 );
@@ -60,6 +61,7 @@ CREATE TABLE income (
     price DECIMAL(10, 2) NOT NULL,
     categorie TEXT,
     getIncomeDate DATE,
+    isRecurent ENUM('YES','NO'),
     CONSTRAINT fk_income_user FOREIGN KEY (user_id) REFERENCES users (userId)
 );
 

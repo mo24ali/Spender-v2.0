@@ -111,9 +111,6 @@
                 </form>
             </div>
         </div>
-
-
-
         <table class="w-full text-sm text-left rtl:text-right text-body border border-default rounded-lg overflow-hidden">
             <thead class="bg-neutral-secondary-soft border-b border-default">
                 <tr>
@@ -155,7 +152,7 @@
                 if (isset($monthFilter)) {
                     $monthCondition = "AND MONTH(dueDate) = '$monthFilter'";
                 }
-                $request = "SELECT * FROM expense where user_id=$userId $catergoryCondition $monthCondition $priceSortCondition";
+                $request = "SELECT * FROM expense where user_id=$userId and state='not paid' $catergoryCondition $monthCondition $priceSortCondition";
                 $query = mysqli_query($conn, $request);
 
                 while ($row = mysqli_fetch_assoc($query)) {
@@ -180,6 +177,10 @@
                        class='px-3 py-1 rounded-md bg-red-500 text-white hover:bg-red-600 transition text-xs'>
                         Delete
                     </a>
+                    <a href='transactions_handler/payExpense.php?payed={$id}' 
+                       class='px-3 py-1 rounded-md bg-green-500 text-white hover:bg-green-600 transition text-xs'>
+                        Pay
+                    </a>
                 </td>
             ";
 
@@ -188,9 +189,6 @@
                 ?>
             </tbody>
         </table>
-
-
-
     </main>
     <!-- ADD EXPENSE MODAL -->
 
@@ -199,17 +197,17 @@
     <?php echo isset($_GET['id']) ? '' : 'hidden'; ?>">
 
         <?php
-        require "config/connexion.php";
+            require "config/connexion.php";
 
-        $expense = null;
-        $modalId = null;
+            $expense = null;
+            $modalId = null;
 
-        if (isset($_GET['id'])) {
-            $modalId = $_GET['id'];
-            $query = "SELECT * FROM expense WHERE expenseId = $modalId";
-            $request = mysqli_query($conn, $query);
-            $expense = mysqli_fetch_assoc($request);
-        }
+            if (isset($_GET['id'])) {
+                $modalId = $_GET['id'];
+                $query = "SELECT * FROM expense WHERE expenseId = $modalId";
+                $request = mysqli_query($conn, $query);
+                $expense = mysqli_fetch_assoc($request);
+            }
         ?>
 
         <form id="addExpenseForm" action="form_handlers/expensesHandler.php<?php echo "?id=" . $modalId ?>" method="post"

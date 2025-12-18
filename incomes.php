@@ -268,7 +268,6 @@
                 const price = document.getElementById("incomePrice").value.trim();
                 const date = document.getElementById("incomeDate").value;
 
-                // Remove previous errors
                 document.querySelectorAll(".error-text").forEach(el => el.remove());
 
                 let valid = true;
