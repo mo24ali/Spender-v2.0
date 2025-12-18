@@ -1,4 +1,9 @@
 <?php
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+require '../vendor/autoload.php';
 class User
 {
     private $conn;
@@ -10,6 +15,14 @@ class User
 
     public function register($firstname, $lastname, $email, $password)
     {
+
+        if (empty($firstname) || empty($lastname) || empty($email) || empty($password)) {
+            return false; // stop registration
+        }
+
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            return false; // invalid email
+        }
         $hashedpass = password_hash($password, PASSWORD_DEFAULT);
         // $hashedpass = sha1($password);
         $stmt = $this->conn->prepare(
@@ -32,12 +45,37 @@ class User
             return $_SERVER['REMOTE_ADDR'];
         }
     }
+    public function sendOtpViaMail($email, $emailPassword, $otp) {
+        $mail = new PHPMailer(true);
 
-    public function login($email, $password)
-    {
-        $ip = $this->getUserIp(); 
+        try {
+            $mail->isSMTP();
+            $mail->Host       = 'smtp.gmail.com';
+            $mail->SMTPAuth   = true;
+            $mail->Username   = $email; 
+            $mail->Password   = $emailPassword; 
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+            $mail->Port       = 587;
 
-        $stmt = $this->conn->prepare("SELECT userId, password FROM users WHERE email = ?");
+            $mail->setFrom($email, 'Your App Name');
+            $mail->addAddress($email);
+
+            $mail->isHTML(true);
+            $mail->Subject = 'Your OTP Code';
+            $mail->Body    = "Hello!<br>Your OTP code is: <strong>$otp</strong><br>This code is valid for 5 minutes.";
+
+            $mail->send();
+            echo "OTP sent successfully!";
+        } catch (Exception $e) {
+            echo "OTP could not be sent. Mailer Error: {$mail->ErrorInfo}";
+            
+        }
+    }
+
+    public function login($email, $password) {
+        $ip = $this->getUserIp();
+
+        $stmt = $this->conn->prepare("SELECT userId, password, email FROM users WHERE email = ?");
         $stmt->bind_param("s", $email);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -45,6 +83,7 @@ class User
         if ($result->num_rows === 1) {
             $user = $result->fetch_assoc();
             $userId = $user['userId'];
+            $userEmail = $user['email'];
 
             if (password_verify($password, $user['password'])) {
 
@@ -58,22 +97,25 @@ class User
                     header("Location: ../dashboard.php");
                     exit();
                 } else {
-                    $otp = rand(100000, 999999); 
-                    $expires = date("Y-m-d H:i:s", strtotime("+10 minutes"));
+                    $otp = rand(100000, 999999);
+                    $expires = date("Y-m-d H:i:s", strtotime("+5 minutes"));
 
                     $otpStmt = $this->conn->prepare(
                         "INSERT INTO otp_codes (user_id, otp_code, expires_at) VALUES (?, ?, ?)"
                     );
-                    $otpStmt->bind_param("iss", $userId, $otp, $expires);
+                    $otpStmt->bind_param("iis", $userId, $otp, $expires);
                     $otpStmt->execute();
-
-
+/////////////////////////////////////////////////////////////////
+                    $this->sendOtpViaMail($userEmail, 'rtyuio', $otp);
+/////////////////////////////////////////////////////////////////////////////////////
+                    // Store temporary session
                     $_SESSION['temp_user_id'] = $userId;
                     $_SESSION['temp_ip'] = $ip;
 
-                    header("Location: ../auth/verify_otp.php"); 
+                    header("Location: ../index.php?verify_otp=true");
                     exit();
                 }
+
             } else {
                 echo "Wrong email or password";
             }

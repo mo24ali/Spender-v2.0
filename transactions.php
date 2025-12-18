@@ -151,7 +151,8 @@ $userId = $_SESSION['user_id'];
 
                 <!-- STATS -->
                 <div class="rounded-3xl bg-gray-900/70 border border-white/10 shadow-xl flex items-center justify-center">
-                    <p class="text-gray-400">📊 Monthly stats coming soon</p>
+                    <h3 class="text-xl font-semibold mb-4">My Transfers</h3>
+
                 </div>
 
                 <!-- INCOMES -->
@@ -207,4 +208,5 @@ $userId = $_SESSION['user_id'];
         });
     </script>
 </body>
+
 </html>

@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <title>Spender</title>
     <style>
         .carousel img {
@@ -54,7 +55,7 @@
                 <a href="mycard.php" class="text-gray-700 dark:text-gray-200 hover:text-blue-600 transition">My Cards</a>
                 <a href="expenses.php" class="text-gray-700 dark:text-gray-200 hover:text-blue-600 transition">Expenses</a>
                 <a href="incomes.php" class="text-gray-700 dark:text-gray-200 hover:text-blue-600 transition">Incomes</a>
-                
+
             </div>
 
             <button id="loginBtn" class="hidden lg:inline-block bg-blue-600 px-4 py-2 rounded-lg text-white hover:bg-blue-500 transition lg:ml-4">
@@ -84,7 +85,6 @@
     </header>
 
     <!-- HERO SECTION -->
-    <!-- HERO SECTION -->
     <section id="hero"
         class="max-w-7xl mx-auto px-6 py-16 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
 
@@ -111,70 +111,70 @@
             </div>
         </div>
 
-        <!-- RIGHT VISUAL -->
-        <!-- <div class="relative flex justify-center md:justify-end">
-            <div id="wrapper"
-                class="relative w-full md:w-[500px] h-[280px] overflow-hidden rounded-2xl  dark:bg-white dark:to-gray-900 shadow-xl flex items-center justify-center">
-
-                <div class="carousel relative w-[500px] h-[250px] flex items-center justify-center">
-                    <img src="assets/desktop.png"
-                        class="w-[40%] object-cover rounded-xl shadow-2xl z-20"
-                        alt="Desktop UI">
-
-                    <img src="assets/mobile.png"
-                        class="w-[22%] absolute left-4 bottom-2 rounded-xl shadow-lg z-30"
-                        alt="Mobile UI">
-
-                    <img src="assets/credit_cards.png"
-                        class="w-[35%] absolute right-2 top-4 rounded-xl shadow-lg z-10"
-                        alt="Cards UI">
-                </div>
-            </div>
-        </div> -->
         <div id="wrapper" class="overflow-hidden w-[750] h-[500px] relative">
             <div id="content" class="space-y-20 p-10">
                 <div class="carousel w-[750] h-[500px] relative flex justify-center items-center">
                     <img src="assets/desktop.png" alt="Desktop" class="desktop w-1/2 object-cover rounded-xl shadow-lg">
-                    <img src="assets/mobile.png" alt="Mobile" class="mobile w-1/6 rounded-xl shadow-lg"> 
-                    <img src="assets/credit_cards.png" alt="Cards" class="cards w-1/4 rounded-xl shadow-lg"> 
+                    <img src="assets/mobile.png" alt="Mobile" class="mobile w-1/6 rounded-xl shadow-lg">
+                    <img src="assets/credit_cards.png" alt="Cards" class="cards w-1/4 rounded-xl shadow-lg">
                 </div>
             </div>
         </div>
 
     </section>
-
-
-
-
-
-
-    <!-- LOGIN MODAL -->
     <div id="loginForm" class="fixed inset-0 bg-black/40 backdrop-blur-sm flex justify-center items-center z-50 hidden">
-        <form class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg w-80 space-y-4"
+        <form id="loginFormEl" class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg w-80 space-y-4"
             action="auth/loginFormHandler.php" method="POST">
             <h2 class="text-xl font-bold text-center dark:text-white">Login</h2>
-            <input id="logMail" type="text" name="emailLog" placeholder="Email" class="w-full p-2 border rounded-lg dark:bg-gray-900 dark:text-white">
-            <input id="logPass" type="password" name="passwordLog" placeholder="Password" class="w-full p-2 border rounded-lg dark:bg-gray-900 dark:text-white">
-            <input type="submit" class="w-full bg-blue-600 hover:bg-blue-500 text-white py-2 rounded-lg transition" value="Connexion" name="connexion">
+            <input id="logMail" type="text" name="emailLog" placeholder="Email"
+                class="w-full p-2 border rounded-lg dark:bg-gray-900 dark:text-white">
+            <input id="logPass" type="password" name="passwordLog" placeholder="Password"
+                class="w-full p-2 border rounded-lg dark:bg-gray-900 dark:text-white">
+            <input type="submit"
+                class="w-full bg-blue-600 hover:bg-blue-500 text-white py-2 rounded-lg transition"
+                value="Connexion" name="connexion">
             <a id="registerFormPipe" class="text-blue-600 hover:underline text-center cursor-pointer block">Create an account →</a>
         </form>
     </div>
 
     <!-- REGISTER MODAL -->
     <div id="register" class="fixed inset-0 bg-black/40 backdrop-blur-md flex justify-center items-center z-50 hidden">
-        <form class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg w-96 space-y-4"
+        <form id="registerFormEl" class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg w-96 space-y-4"
             action="auth/registerFormHandler.php" method="POST">
             <h2 class="text-xl font-bold text-center dark:text-white">Register</h2>
-            <input type="text" name="firstname" placeholder="Firstname" class="w-full p-2 border rounded-lg dark:bg-gray-900 dark:text-white">
-            <input type="text" name="lastname" placeholder="Lastname" class="w-full p-2 border rounded-lg dark:bg-gray-900 dark:text-white">
-            <input type="text" name="emailRegister" placeholder="Email" class="w-full p-2 border rounded-lg dark:bg-gray-900 dark:text-white">
-            <input type="password" name="passwordRegister" placeholder="Password" class="w-full p-2 border rounded-lg dark:bg-gray-900 dark:text-white">
-            <button type="submit" class="w-full bg-blue-600 hover:bg-blue-500 text-white py-2 rounded-lg transition">Register</button>
+            <input type="text" name="firstname" placeholder="Firstname"
+                class="w-full p-2 border rounded-lg dark:bg-gray-900 dark:text-white">
+            <input type="text" name="lastname" placeholder="Lastname"
+                class="w-full p-2 border rounded-lg dark:bg-gray-900 dark:text-white">
+            <input type="text" name="emailRegister" placeholder="Email"
+                class="w-full p-2 border rounded-lg dark:bg-gray-900 dark:text-white">
+            <input type="password" name="passwordRegister" placeholder="Password"
+                class="w-full p-2 border rounded-lg dark:bg-gray-900 dark:text-white">
+            <button type="submit"
+                class="w-full bg-blue-600 hover:bg-blue-500 text-white py-2 rounded-lg transition">Register</button>
         </form>
     </div>
-    <script>
+    <div id="otpPopup" class="fixed inset-0 bg-black/40 backdrop-blur-md flex justify-center items-center z-50 
+        <?php
+            if(!isset($_GET['verify_otp'])){
+                    echo 'hidden';
+            }else{
+                echo ' ';
+            }
+        ?>
+    ">
+        <form id="otpForm" class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg w-96 space-y-4"
+            action="auth/verify_otp.php" method="POST">
+            <h2 class="text-xl font-bold text-center dark:text-white">Verify OTP sent by mail</h2>
+            <input type="text" name="otp" placeholder="otp"
+                class="w-full p-2 border rounded-lg dark:bg-gray-900 dark:text-white">
+            
+            <button type="submit"
+                class="w-full bg-blue-600 hover:bg-blue-500 text-white py-2 rounded-lg transition">Register</button>
+        </form>
+    </div>
 
-    </script>
+
 
 </body>
 

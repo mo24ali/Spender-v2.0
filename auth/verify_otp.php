@@ -1,7 +1,7 @@
 <?php
 
-    session_start();
-    require "../config/connexion.php";
+session_start();
+require "../config/connexion.php";
 
 if (!isset($_SESSION['temp_user_id'], $_SESSION['temp_ip'])) {
     header("Location: login.php");
@@ -38,25 +38,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         header("Location: ../dashboard.php");
         exit();
-
     } else {
         $error = "Invalid or expired OTP. Please try again.";
     }
 }
 ?>
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Verify OTP</title>
-</head>
-<body>
-<h2>Enter OTP sent to your email</h2>
-<?php if(isset($error)) echo "<p style='color:red'>$error</p>"; ?>
-<form method="post">
-    <input type="text" name="otp" placeholder="Enter OTP" required>
-    <button type="submit">Verify</button>
-    
-</form>
-</body>
-</html>
