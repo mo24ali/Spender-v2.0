@@ -4,21 +4,32 @@ CREATE DATABASE smart_wallet;
 
 USE smart_wallet;
 
-drop table income;
+-- Drop child tables first
+DROP TABLE IF EXISTS otp_codes;
+DROP TABLE IF EXISTS user_ips;
+DROP TABLE IF EXISTS login_logs;
+DROP TABLE IF EXISTS notifications;
+DROP TABLE IF EXISTS transactions;
+DROP TABLE IF EXISTS income;
+DROP TABLE IF EXISTS expense;
+DROP TABLE IF EXISTS carte;
 
-drop table expense;
+-- Drop parent tables last
+DROP TABLE IF EXISTS categories;
+DROP TABLE IF EXISTS users;
 
-drop table categories;
-
-drop table transactions;
-drop table user_ips;
-drop table otp_codes;
-drop table login_logs;
-drop table notifications;
-drop table users;
 
  
 -- users(#userId , firstname, lastname, email, password, join_date)
+-- expense(#expenseId, expenseTitle, description, price, categorie , duedate, state , user_id#)
+-- income(#incomeId, incomeTitle, description , price, categorie, getIncomeDate, user_id#)
+-- categories(#categoryId, name)
+--  transactions(#transactionId, title, description, type, amount , transaction_date, state, user_id#, category_id#)
+-- user_ips(#id,id_adress, created_at, user_id#)
+-- otp_codes(#id, otp_code, expires_at, used, created_at, user_id#)
+-- login_logs(#id, ip_adress, status, created_at, user_id#)
+-- carte(#idCard, nom, user_id, currentSold,limite, statue, expireDate, num, user_id# )
+-- notifications(#id, message, seen , created_at, user_id#)
 
 CREATE TABLE users (
     userId INT AUTO_INCREMENT PRIMARY KEY,
@@ -29,7 +40,6 @@ CREATE TABLE users (
     join_date DATE DEFAULT CURRENT_DATE
 );
 
--- expense(#expenseId, expenseTitle, description, price, categorie , duedate, state , user_id#)
 CREATE TABLE expense (
     expenseId INT PRIMARY KEY AUTO_INCREMENT,
     expenseTitle VARCHAR(50) NOT NULL,
@@ -42,7 +52,6 @@ CREATE TABLE expense (
     CONSTRAINT fk_expense_user FOREIGN KEY (user_id) REFERENCES users (userId)
 );
 
--- income(#incomeId, incomeTitle, description , price, categorie, getIncomeDate, user_id#)
 CREATE TABLE income (
     incomeId INT PRIMARY KEY AUTO_INCREMENT,
     incomeTitle VARCHAR(50) NOT NULL,
@@ -53,13 +62,12 @@ CREATE TABLE income (
     getIncomeDate DATE,
     CONSTRAINT fk_income_user FOREIGN KEY (user_id) REFERENCES users (userId)
 );
--- categories(#categoryId, name)
+
 CREATE TABLE categories (
     categoryId INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(50) NOT NULL UNIQUE
 );
 
---  transactions(#transactionId, title, description, type, amount , transaction_date, state, user_id#, category_id#)
 CREATE TABLE transactions (
     transactionId INT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(50) NOT NULL,
@@ -73,17 +81,16 @@ CREATE TABLE transactions (
     FOREIGN KEY (user_id) REFERENCES users (userId) ON DELETE CASCADE,
     FOREIGN KEY (category_id) REFERENCES categories (categoryId)
 );
--- user_ips(#id,id_adress, created_at, user_id#)
+
 CREATE TABLE user_ips (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
     ip_address VARCHAR(45) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    FOREIGN KEY (user_id) REFERENCES users(userId) ON DELETE CASCADE
 );
 
--- otp_codes(#id, otp_code, expires_at, used, created_at, user_id#)
 CREATE TABLE otp_codes (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
@@ -92,21 +99,18 @@ CREATE TABLE otp_codes (
     used TINYINT(1) DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    FOREIGN KEY (user_id) REFERENCES users(userId) ON DELETE CASCADE
 );
 
--- login_logs(#id, ip_adress, status, created_at, user_id#)
 CREATE TABLE login_logs (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
     ip_address VARCHAR(45),
     status ENUM('SUCCESS', 'FAILED', 'OTP_REQUIRED'),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    FOREIGN KEY (user_id) REFERENCES users(userId) ON DELETE CASCADE
 );
 
--- notifications(#id, message, seen , created_at, user_id#)
 CREATE TABLE notifications (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
@@ -114,5 +118,17 @@ CREATE TABLE notifications (
     seen TINYINT DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    FOREIGN KEY (user_id) REFERENCES users(userId) ON DELETE CASCADE
+);
+
+CREATE TABLE carte (
+    idCard INT AUTO_INCREMENT PRIMARY KEY,
+    nom TEXT NOT NULL,
+    user_id INT NOT NULL,
+    currentSold INT NOT NULL DEFAULT 0,
+    limite INT NOT NULL DEFAULT 0,
+    statue enum('Primary','Secondary') NOT NULL,
+    expireDate DATE,
+    num INT NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(userId) ON DELETE CASCADE
 );

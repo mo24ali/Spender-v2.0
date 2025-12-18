@@ -35,7 +35,7 @@ class User
 
     public function login($email, $password)
     {
-        $ip = $this->getUserIp(); // Correct call inside class
+        $ip = $this->getUserIp(); 
 
         $stmt = $this->conn->prepare("SELECT userId, password FROM users WHERE email = ?");
         $stmt->bind_param("s", $email);

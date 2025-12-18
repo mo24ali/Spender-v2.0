@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         unset($_SESSION['temp_user_id'], $_SESSION['temp_ip']);
 
-        header("Location: dashboard.php");
+        header("Location: ../dashboard.php");
         exit();
 
     } else {

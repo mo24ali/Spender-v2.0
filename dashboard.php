@@ -11,7 +11,10 @@
     <title>Dashboard</title>
 </head>
 
-
+<?php
+    require "config/connexion.php";
+    session_start();
+?>
 
 <body class="bg-gray-50 dark:bg-gray-900 dark:text-white">
 
@@ -22,9 +25,10 @@
             <div class="hidden lg:flex space-x-10">
                 <a href="dashboard.php" class="text-gray-700 dark:text-gray-200 hover:text-blue-600 transition">Dashboard</a>
                 <a href="transactions.php" class="text-gray-700 dark:text-gray-200 hover:text-blue-600 transition">Transactions</a>
+                <a href="mycard.php" class="text-gray-700 dark:text-gray-200 hover:text-blue-600 transition">My cards</a>
                 <a href="expenses.php" class="text-gray-700 dark:text-gray-200 hover:text-blue-600 transition">Expenses</a>
                 <a href="incomes.php" class="text-gray-700 dark:text-gray-200 hover:text-blue-600 transition">Incomes</a>
-                <a href="support.php" class="text-gray-700 dark:text-gray-200 hover:text-blue-600 transition">Support</a>
+
             </div>
             <a href="auth/logout.php">
                 <button id="" class="hidden lg:inline-block bg-blue-600 px-4 py-2 rounded-lg text-white hover:bg-blue-500 transition lg:ml-4">
@@ -62,8 +66,6 @@
                 Welcome back 👋
                 <span class="block text-lg font-bold text-gray-600 mt-1 dark:text-white">
                     <?php
-                    require "config/connexion.php";
-                    session_start();
 
                     $userId = $_SESSION['user_id'];
                     $request = "SELECT firstname, lastname FROM users WHERE userId = $userId";
@@ -102,10 +104,10 @@
                 </form>
                 <button id="exportCsv"
                     class="text-white px-4 sm:px-5 py-2.5 rounded-xl font-semibold bg-white dark:bg-gray-900 border hover:bg-white hover:text-black transform duration-300">
-                   <a href="export/exportcsv.php"> 
-                     Export csv   
-                    <i class="fa fa-download"></i>
-                   </a>
+                    <a href="export/exportcsv.php">
+                        Export csv
+                        <i class="fa fa-download"></i>
+                    </a>
                 </button>
             </div>
         </div>
