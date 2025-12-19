@@ -57,6 +57,12 @@ class User
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
             $mail->Port       = 587;
 
+
+            /**
+             * 
+             * 
+             * need to generate a sender email and a password from the google app then put it in the .env file to use it later 
+             */
             $mail->setFrom($email, 'Your App Name');
             $mail->addAddress($email);
 

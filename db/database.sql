@@ -13,7 +13,7 @@ DROP TABLE IF EXISTS transactions;
 DROP TABLE IF EXISTS income;
 DROP TABLE IF EXISTS expense;
 DROP TABLE IF EXISTS carte;
-
+DROP TABLE IF EXISTS transfert;
 -- Drop parent tables last
 DROP TABLE IF EXISTS categories;
 DROP TABLE IF EXISTS users;
@@ -78,7 +78,7 @@ CREATE TABLE transactions (
     description TEXT,
     user_id INT NOT NULL,
     category_id INT,
-    type ENUM('income', 'expense') NOT NULL,
+    type text NOT NULL,
     amount DECIMAL(10, 2) NOT NULL,
     transaction_date DATE NOT NULL,
     state VARCHAR(20) DEFAULT 'not paid',
@@ -145,3 +145,13 @@ CREATE TABLE carte (
     UNIQUE KEY uniq_primary_statue_per_user (primary_statue_user),
     FOREIGN KEY (user_id) REFERENCES users(userId) ON DELETE CASCADE
 );
+
+
+CREATE TABLE transfert (
+    transferId INT PRIMARY KEY AUTO_INCREMENT,
+    idSender INT NOT NULL,
+    idReceiver INT NOT NULL,
+    amount INT NOT NULL,
+    daySent DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+

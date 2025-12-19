@@ -45,9 +45,15 @@ $id = $_SESSION['user_id'];
     <section class="pt-24 text-center">
         <h2 class="text-sm uppercase tracking-widest text-indigo-400">Wallet</h2>
         <h1 class="mt-3 text-5xl font-bold tracking-tight">My Debit Cards</h1>
-        <p class="mt-4 text-gray-400 max-w-xl mx-auto">
+        <p class="mt-4 mb-4 text-gray-400 max-w-xl mx-auto">
             Manage your debit cards, track balances, and choose your primary card.
         </p>
+        <button
+            class="flex-1 rounded-xl bg-indigo-600/90 px-4 py-2 text-sm font-semibold hover:bg-indigo-500 transition">
+            <a href="transactions_handler/helperSendMoney.php?sendTransfer=true">
+                Send Money
+            </a>
+        </button>
     </section>
 
     <?php
@@ -158,6 +164,32 @@ $id = $_SESSION['user_id'];
         </form>
     </div>
 
+
+    <div id="sendMoney" class="fixed inset-0 bg-black/40 backdrop-blur-md flex justify-center items-center z-50 
+        <?php
+            if (!isset($_GET['send'])) {
+                echo 'hidden';
+            } else {
+                echo ' ';
+            }
+
+
+            $userId = $_SESSION['user_id'];
+
+            ?>
+        ">
+        <form id="sendMoneyForm" class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg w-96 space-y-4"
+            action="transactions_handler/transferMoney.php?sender=userId?target=targetId" method="POST">
+            <h2 class="text-xl font-bold text-center dark:text-white">Send to a friend</h2>
+            <input type="text" name="receiverMail" placeholder="Receiver email"
+                class="w-full p-2 border rounded-lg dark:bg-gray-900 dark:text-white">
+            <input type="text" name="amount" placeholder="How much you want to send ?"
+                class="w-full p-2 border rounded-lg dark:bg-gray-900 dark:text-white">
+
+            <button type="submit"
+                class="w-full bg-blue-600 hover:bg-blue-500 text-white py-2 rounded-lg transition">Send</button>
+        </form>
+    </div>
     <!-- ANIMATIONS -->
     <script>
         gsap.to("#navbar", {

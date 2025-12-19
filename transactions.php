@@ -58,7 +58,7 @@ $userId = $_SESSION['user_id'];
             </div>
         </nav>
     </header>
-
+    
     <section class="py-24">
         <div class="max-w-7xl mx-auto px-6">
 
@@ -67,7 +67,7 @@ $userId = $_SESSION['user_id'];
 
             <div class="mt-16 grid gap-6 lg:grid-cols-3 lg:grid-rows-2">
 
-                <div class="lg:row-span-2 rounded-3xl bg-gray-900/70 border border-white/10 shadow-xl">
+                <div class="lg:row-span-2 rounded-3xl bg-gray-900/70 border border-white/10 shadow-xl  ">
                     <div class="p-8 flex justify-between items-center">
                         <h3 class="text-xl font-semibold">Expenses</h3>
                         <p class="text-sm text-gray-400">
@@ -87,17 +87,19 @@ $userId = $_SESSION['user_id'];
                                 <th class="px-6 py-3 text-left">Expense</th>
                                 <th class="px-6 py-3">Price</th>
                                 <th class="px-6 py-3">State</th>
+                                <th class="px-6 py-3">Category</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php
-                            $query = "select expenseTitle, price , state from expense where user_id=$userId and state='paid'";
+                            $query = "select expenseTitle, price , state,categorie from expense where user_id=$userId and state='paid'";
                             $request = mysqli_query($conn, $query);
                             while ($rows = mysqli_fetch_assoc($request)) {
                                 echo "
                                 <tr class='border-t border-white/5 hover:bg-white/5 transition'>
                                     <td class='px-6 py-3'>{$rows['expenseTitle']}</td>
                                     <td class='px-6 py-3 text-center'>{$rows['price']}</td>
+                                    <td class='px-6 py-3 text-center'>{$rows['categorie']}</td>
                                     <td class='px-6 py-3 text-center text-green-400'>✓ Paid</td>
                                 </tr>";
                             }
@@ -149,9 +151,38 @@ $userId = $_SESSION['user_id'];
                     </div>
                 </div>
 
-                <!-- STATS -->
+                <!-- TTRANSFERS -->
                 <div class="rounded-3xl bg-gray-900/70 border border-white/10 shadow-xl flex items-center justify-center">
-                    <h3 class="text-xl font-semibold mb-4">My Transfers</h3>
+                    <div class="p-8">
+                        <h3 class="text-xl font-semibold mb-4">My Transfers</h3>
+                        <table class="w-full text-sm">
+                            <thead class="bg-white/5 text-gray-300">
+                                <tr>
+                                    <th class="px-6 py-3 text-left">TransferId</th>
+                                    <th class="px-6 py-3">Receiver</th>
+                                    <th class="px-6 py-3">Amount</th>
+                                    <th class="px-6 py-3">When</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                $query = "select transferId, idReceiver , amount ,daySent 
+                                        from transfert where idSender=$userId
+                                    ";
+                                $request = mysqli_query($conn, $query);
+                                while ($rows = mysqli_fetch_assoc($request)) {
+                                    echo "
+                                <tr class='border-t border-white/5 hover:bg-white/5 transition'>
+                                    <td class='px-6 py-3'>{$rows['transferId']}</td>
+                                    <td class='px-6 py-3 text-center'>{$rows['idReceiver']}</td>
+                                    <td class='px-6 py-3 text-center'>{$rows['amount']}</td>
+                                    <td class='px-6 py-3 text-center text-green-400'>{$rows['daySent']}</td>
+                                </tr>";
+                                }
+                                ?>
+                            </tbody>
+                        </table>
+                    </div>
 
                 </div>
 
