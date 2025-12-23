@@ -2,7 +2,7 @@
 
 return [
     'host' => 'localhost',
-    'dbname' => 'smart_wallet',
+    'dbname' => 'spender',
     'user' => 'root',
     'password' => '',
     'charset' => 'utf8mb4'

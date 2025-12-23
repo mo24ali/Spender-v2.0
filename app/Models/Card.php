@@ -3,53 +3,51 @@
 require __DIR__ . "../config/connexion.php";
 require __DIR__ . "../config/database.php";
 
+
 class Card
 {
+    private PDO $conn;
 
-    private $conn;
-    
-    public function __construct($conn)
+    public function __construct(PDO $conn)
     {
-        $this->conn = new Database();
+        $this->conn = $conn;
     }
-    public function addCard($userId, $limite, $name, $currentSold, $number, $expireDate,$stat)
-    {
+
+    public function addCard(
+        int $userId,
+        float $limite,
+        string $name,
+        float $currentSold,
+        string $number,
+        string $expireDate,
+        string $stat
+    ) {
         $query = "
-        INSERT INTO carte (nom, user_id, currentSold, limite, statue, expireDate, num)
-        VALUES (?, ?, ?, ?, ?, ?,?)
+            INSERT INTO carte (nom, user_id, currentSold, limite, statue, expireDate, num)
+            VALUES (:name, :user_id, :currentSold, :limite, :stat, :expireDate, :num)
         ";
 
         $stmt = $this->conn->prepare($query);
 
-        $stmt->bind_param(
-            "siiissi",
-            $name,
-            $userId,
-            $currentSold,
-            $limite,
-            $stat,
-            $expireDate,
-            $number
-        );
-
-        return $stmt->execute();
+        return $stmt->execute([
+            ':name' => $name,
+            ':user_id' => $userId,
+            ':currentSold' => $currentSold,
+            ':limite' => $limite,
+            ':stat' => $stat,
+            ':expireDate' => $expireDate,
+            ':num' => $number
+        ]);
     }
 
-    public function removeCard($carId) {
-        $query = '
-                DELETE FROM carte WHERE idCard = ? 
-            ' ;
-
-        $stmt = $this->conn->prepare($query);
-
-        $stmt->bind_param(
-            "i",
-            $carId
+    public function removeCard(int $cardId): bool
+    {
+        $stmt = $this->conn->prepare(
+            "DELETE FROM carte WHERE idCard = :id"
         );
-        $stmt->execute();
-    }
-    /////////////////////////////// edit card //////////////////////////////////////
-    public function editCard($carId){
-        
+
+        return $stmt->execute([
+            ':id' => $cardId
+        ]);
     }
 }

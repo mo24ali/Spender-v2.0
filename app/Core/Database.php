@@ -2,41 +2,31 @@
 
 
 //Singleton 
+
 class Database
 {
-
-
-    private static $conn = null;
-
-    private static function init()
-    {
-        if (is_null(self::$conn)) {
-            self::$conn = new self();
-        }
-        return self::$conn;
-    }
+    private PDO $conn;
 
     public function __construct()
     {
-        try{
-            $config = require __DIR__ . '/../config/connexion.php';
-            $dsn = "mysql:host={$config['host']};dbname={$config['db']};charset={$config['charset']}";
-            $this->conn = new PDO(
-                $dsn, 
-                $config['user'],
-                $config['password']
-            );
-            $this->conn->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
-        }catch(PDOException $pe){
-            die("Connection failed: ".$pe->getMessage());
-        }
+        $config = require __DIR__ . '/../config/connexion.php';
+
+        $dsn = "mysql:host={$config['host']};dbname={$config['db']};charset={$config['charset']}";
+
+        $this->conn = new PDO(
+            $dsn,
+            $config['user'],
+            $config['password'],
+            [
+                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
+            ]
+        );
     }
 
-    public static function getValue($key)
+    public function getConnection(): PDO
     {
-        self::init();
-        return self::$values[$key] ?? ' ';
+        return $this->conn;
     }
-
-    public function setConnection() {}
 }
+

@@ -6,7 +6,7 @@ require __DIR__ . "../config/database.php";
         private $conn;
         private $limite;
         private $name;
-
+        
         public function __construct()
         {
             throw new \Exception('Not implemented');
