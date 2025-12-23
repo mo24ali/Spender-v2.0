@@ -1,16 +1,16 @@
 <?php
 
-require "../config/connexion.php";
+require __DIR__ . "../config/connexion.php";
+require __DIR__ . "../config/database.php";
 
 class Card
 {
 
     private $conn;
-
-
+    
     public function __construct($conn)
     {
-        $this->conn = $conn;
+        $this->conn = new Database();
     }
     public function addCard($userId, $limite, $name, $currentSold, $number, $expireDate,$stat)
     {

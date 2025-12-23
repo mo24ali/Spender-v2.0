@@ -74,7 +74,6 @@ try {
         throw new Exception("Insufficient card balance");
     }
 
-    // 5️⃣ Deduct card balance
     $stmt = $conn->prepare("
         UPDATE carte
         SET currentSold = currentSold - ?
@@ -83,7 +82,6 @@ try {
     $stmt->bind_param("di", $expense['price'], $cardId);
     $stmt->execute();
 
-    // 6️⃣ Insert transaction
     $stmt = $conn->prepare("
         INSERT INTO transactions
         (title, description, user_id, category_id, type, amount, transaction_date, state)

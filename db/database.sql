@@ -1,8 +1,8 @@
-DROP DATABASE IF EXISTS smart_wallet;
+    DROP DATABASE IF EXISTS spender;
 
-CREATE DATABASE smart_wallet;
+CREATE DATABASE spender;
 
-USE smart_wallet;
+USE spender;
 
 -- Drop child tables first
 DROP TABLE IF EXISTS otp_codes;

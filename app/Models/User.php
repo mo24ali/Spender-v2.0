@@ -1,16 +1,8 @@
 <?php
 
-require_once __DIR__ . '/../vendor/autoload.php';
-
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
-use Dotenv\Dotenv;
-
-
-
-$dotenv = Dotenv::createImmutable(__DIR__ . '/..');
-$dotenv->load();
-
+require __DIR__ . "../config/connexion.php";
+require __DIR__ . "../config/database.php";
+require __DIR__ .'/../Services/OtpService.php';
 class User
 {
     private $conn;
@@ -51,44 +43,13 @@ class User
             return $_SERVER['REMOTE_ADDR'];
         }
     }
-    public function sendOtpViaMail( $toEmail,  $otp)
-    {
-        $mail = new PHPMailer(true);
-
-        try {
-           
-            $mail->isSMTP();
-            $mail->Host       = $_ENV['MAIL_HOST'];
-            $mail->SMTPAuth   = true;
-            $mail->Username   = $_ENV['MAIL_USERNAME'];
-            $mail->Password   = $_ENV['MAIL_PASSWORD'];
-            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-            $mail->Port       = $_ENV['MAIL_PORT'];
-
-           
-            $mail->setFrom($_ENV['MAIL_USERNAME'], 'spenderOTP');
-            $mail->addAddress($toEmail);
-
-            $mail->isHTML(true);
-            $mail->Subject = 'Your OTP Code';
-            $mail->Body = "
-            <p>Hello,</p>
-            <p>Your OTP code is:</p>
-            <h2>{$otp}</h2>
-            <p>This code is valid for <strong>5 minutes</strong>.</p>
-        ";
-
-            $mail->send();
-            return true;
-        } catch (Exception $e) {
-            error_log('Mailer Error: ' . $mail->ErrorInfo);
-            return false;
-        }
-    }
+    
 
     public function login($email, $password)
     {
         $ip = $this->getUserIp();
+
+        $otpService = new OtpService();
 
         $stmt = $this->conn->prepare("SELECT userId, password, email FROM users WHERE email = ?");
         $stmt->bind_param("s", $email);
@@ -121,7 +82,7 @@ class User
                     $otpStmt->bind_param("iis", $userId, $otp, $expires);
                     $otpStmt->execute();
                     
-                    $this->sendOtpViaMail($userEmail, $otp);
+                    $otpService->sendOtpViaMail($userEmail, $otp);
                     
                     $_SESSION['temp_user_id'] = $userId;
                     $_SESSION['temp_ip'] = $ip;
@@ -136,4 +97,6 @@ class User
             echo "Wrong email or password";
         }
     }
+
+    
 }

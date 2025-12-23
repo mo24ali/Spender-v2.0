@@ -1,4 +1,6 @@
 <?php
+require __DIR__ . "../config/connexion.php";
+require __DIR__ . "../config/database.php";
     class Income{
         private $conn;
 
@@ -38,6 +40,19 @@
             }
             
         }
+
+
+        public function getAll(){
+            
+
+        }
+        public function getById(){
+
+        }
+        public function getByCategory(){
+
+        }
+
     }
 
 ?>

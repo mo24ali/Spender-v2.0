@@ -1,4 +1,6 @@
 <?php
+require __DIR__ . "../config/connexion.php";
+require __DIR__ . "../config/database.php";
     class Expense{
         private $conn;
 
@@ -36,6 +38,18 @@
             if(isset($query)){
                 header("Location: ../expenses.php");
             }
+        }
+
+        
+        public function getAll(){
+            
+
+        }
+        public function getById(){
+
+        }
+        public function getByCategory(){
+
         }
     }
 

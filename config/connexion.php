@@ -1,3 +1,9 @@
 <?php
-    $conn = mysqli_connect("localhost","root","","smart_wallet");
-?>
+
+return [
+    'host' => 'localhost',
+    'dbname' => 'smart_wallet',
+    'user' => 'root',
+    'password' => '',
+    'charset' => 'utf8mb4'
+];
