@@ -1,7 +1,10 @@
 <?php
 session_start();
-require "../config/connexion.php";
-require "../models/user.php";
+require_once __DIR__ .  "/../../Core/Database.php";
+
+$con = new Database();
+$conn = $con->getConnection();
+require "../../Models/User.php";
 
 $user = new User($conn);
 if (isset($_POST['connexion'])) {

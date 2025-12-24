@@ -126,7 +126,7 @@
     </section>
     <div id="loginForm" class="fixed inset-0 bg-black/40 backdrop-blur-sm flex justify-center items-center z-50 hidden">
         <form id="loginFormEl" class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg w-80 space-y-4"
-            action="auth/loginFormHandler.php" method="POST">
+            action="app/Views/auth/loginFormHandler.php" method="POST">
             <h2 class="text-xl font-bold text-center dark:text-white">Login</h2>
             <input id="logMail" type="text" name="emailLog" placeholder="Email"
                 class="w-full p-2 border rounded-lg dark:bg-gray-900 dark:text-white">
@@ -135,7 +135,7 @@
             <input type="submit"
                 class="w-full bg-blue-600 hover:bg-blue-500 text-white py-2 rounded-lg transition"
                 value="Connexion" name="connexion">
-            <a id="registerFormPipe" href="auth/registerHelper.php?register=true" class="text-blue-600 hover:underline text-center cursor-pointer block">Create an account →</a>
+            <a id="registerFormPipe" href="app/Views/auth/registerHelper.php?register=true" class="text-blue-600 hover:underline text-center cursor-pointer block">Create an account →</a>
         </form>
     </div>
 
@@ -152,7 +152,7 @@
         ?>
     ">
         <form id="registerFormEl" class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg w-96 space-y-4"
-            action="auth/registerFormHandler.php" method="POST">
+            action="app/Views/auth/registerFormHandler.php" method="POST">
             <h2 class="text-xl font-bold text-center dark:text-white">Register</h2>
             <input type="text" name="firstname" placeholder="Firstname"
                 class="w-full p-2 border rounded-lg dark:bg-gray-900 dark:text-white">
@@ -176,7 +176,7 @@
         ?>
     ">
         <form id="otpForm" class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg w-96 space-y-4"
-            action="auth/verify_otp.php" method="POST">
+            action="./app/Views/auth/verify_otp.php" method="POST">
             <h2 class="text-xl font-bold text-center dark:text-white">Verify OTP sent by mail</h2>
             <input type="text" name="otp" placeholder="otp"
                 class="w-full p-2 border rounded-lg dark:bg-gray-900 dark:text-white">

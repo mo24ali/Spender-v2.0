@@ -1,9 +1,8 @@
 <?php
 
-    session_start();
-    session_unset();
-    session_destroy();
-    header("Location: ../index.php");
-    exit();
+require "../../Core/database.php";
+require "../../Models/User.php";
 
-?>
+$obj = new Database();
+$acc = new User($obj->getConnection());
+$acc->logout();

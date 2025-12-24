@@ -12,8 +12,12 @@
 </head>
 
 <?php
-    require "config/connexion.php";
-    session_start();
+session_start();
+require_once __DIR__ .  "/../../Core/Database.php";
+
+$con = new Database();
+$conn = $con->getConnection();
+
 ?>
 
 <body class="bg-gradient-to-br from-gray-950 via-gray-900 to-gray-800 text-white">
@@ -25,15 +29,16 @@
                 class="text-2xl font-extrabold bg-gradient-to-r from-blue-400 to-indigo-500 bg-clip-text text-transparent">
                 Spender
             </a>
+
             <div class="hidden lg:flex space-x-10">
-                <a href="dashboard.php" class="text-gray-700 dark:text-gray-200 hover:text-blue-600 transition">Dashboard</a>
-                <a href="transactions.php" class="text-gray-700 dark:text-gray-200 hover:text-blue-600 transition">Transactions</a>
-                <a href="mycard.php" class="text-gray-700 dark:text-gray-200 hover:text-blue-600 transition">My cards</a>
-                <a href="expenses.php" class="text-gray-700 dark:text-gray-200 hover:text-blue-600 transition">Expenses</a>
-                <a href="incomes.php" class="text-gray-700 dark:text-gray-200 hover:text-blue-600 transition">Incomes</a>
+                <a href="#" class="text-gray-700 dark:text-gray-200 hover:text-blue-600 transition">Dashboard</a>
+                <a href="../transactions/transactions.php" class="text-gray-700 dark:text-gray-200 hover:text-blue-600 transition">Transactions</a>
+                <a href="../cards/mycard.php" class="text-gray-700 dark:text-gray-200 hover:text-blue-600 transition">My Cards</a>
+                <a href="../expenses/expenses.php" class="text-gray-700 dark:text-gray-200 hover:text-blue-600 transition">Expenses</a>
+                <a href="../incomes/incomes.php" class="text-gray-700 dark:text-gray-200 hover:text-blue-600 transition">Incomes</a>
 
             </div>
-            <a href="auth/logout.php">
+            <a href="../auth/logout.php">
                 <button id="" class="hidden lg:inline-block bg-blue-600 px-4 py-2 rounded-lg text-white hover:bg-blue-500 transition lg:ml-4">
                     Logout
                 </button>
@@ -71,9 +76,13 @@
                     <?php
 
                     $userId = $_SESSION['user_id'];
-                    $request = "SELECT firstname, lastname FROM users WHERE userId = $userId";
-                    $query = mysqli_query($conn, $request);
-                    $rows = mysqli_fetch_assoc($query);
+                    $request = "SELECT 
+                                    firstname,
+                                    lastname 
+                                FROM users 
+                                WHERE userId = $userId";
+                    $query = $conn->query($request);
+                    $rows = $query->fetch(PDO::FETCH_ASSOC);
 
                     echo $rows['firstname'] . " " . $rows['lastname'];
                     ?>
@@ -135,7 +144,7 @@
                     <p class="text-3xl font-bold mb-4 text-blue-600 dark:text-blue-400">
                         $
                         <?php
-                        require "config/connexion.php";
+                        // require "config/connexion.php";
                         $month = isset($_GET['revenueMonth']) ? $_GET['revenueMonth'] : null;
                         $monthCondition = "";
                         if ($month) {
@@ -143,8 +152,8 @@
                         }
                         $userId = $_SESSION['user_id'];
                         $query = "select SUM(i.price)-SUM(e.price) as total from income i ,expense e where i.user_id =$userId AND e.user_id=$userId $monthCondition";
-                        $request = mysqli_query($conn, $query);
-                        $row = mysqli_fetch_assoc($request);
+                        $request = $conn->query($query);
+                        $row = $request->fetch(PDO::FETCH_ASSOC);
                         echo $row['total'];
                         ?>
                     </p>
@@ -172,7 +181,7 @@
                     <p class="text-3xl font-bold mb-4 text-red-600 dark:text-red-400">
                         $
                         <?php
-                        require "config/connexion.php";
+                        // require "config/connexion.php";
                         $userId = $_SESSION['user_id'];
                         $month = isset($_GET['revenueMonth']) ? $_GET['revenueMonth'] : null;
 
@@ -181,8 +190,8 @@
                             $monthCondition = "AND MONTH(dueDate) = '$month'";
                         }
                         $query = "select SUM(price) as total from expense where user_id=$userId $monthCondition";
-                        $request = mysqli_query($conn, $query);
-                        $row = mysqli_fetch_assoc($request);
+                        $request = $conn->query($query);
+                        $row = $request->fetch(PDO::FETCH_ASSOC);
                         echo $row['total'];
                         ?>
                     </p>
@@ -210,7 +219,7 @@
                     <p class="text-3xl font-bold mb-4 text-green-600 dark:text-green-400">
                         $
                         <?php
-                        require "config/connexion.php";
+                        // require "config/connexion.php";
                         $userId = $_SESSION['user_id'];
                         $month = isset($_GET['revenueMonth']) ? $_GET['revenueMonth'] : null;
 
@@ -219,8 +228,8 @@
                             $monthCondition = "AND MONTH(getIncomeDate) = '$month'";
                         }
                         $query = "select SUM(price) as total from income where user_id=$userId $monthCondition";
-                        $request = mysqli_query($conn, $query);
-                        $row = mysqli_fetch_assoc($request);
+                        $request = $conn->query($query);
+                        $row = $request->fetch(PDO::FETCH_ASSOC);
                         echo $row['total'];
                         ?>
                     </p>
@@ -277,16 +286,16 @@
 
 
     <?php
-    require "config/connexion.php";
+    // require "config/connexion.php";
 
     $requestExpense = "SELECT price, dueDate, Month(dueDate) as month FROM expense";
-    $queryExpense = mysqli_query($conn, $requestExpense);
+    $queryExpense = $conn->prepare($requestExpense);
     $requestIncome = "SELECT price, getIncomeDate , Month(getIncomeDate) as month FROM income";
-    $queryincome = mysqli_query($conn, $requestIncome);
+    $queryincome = $conn->prepare($requestIncome);
     $dataExpense = [];
     $dataIncome = [];
 
-    while ($row = mysqli_fetch_assoc($queryExpense)) {
+    while ($row = $queryExpense->fetch(PDO::FETCH_ASSOC)) {
         $dataExpense[] = [
             "price" => (float)$row["price"],
             "date"  => $row["dueDate"],
@@ -295,7 +304,7 @@
     }
 
 
-    while ($row = mysqli_fetch_assoc($queryincome)) {
+    while ($row = $queryincome->fetch(PDO::FETCH_ASSOC)) {
         $dataIncome[] = [
             "price" => (float)$row["price"],
             "date" => $row["getIncomeDate"],
