@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -50,11 +52,11 @@
             <a href="index.php" class="text-2xl font-bold text-blue-600 dark:text-white">Spender</a>
 
             <div class="hidden lg:flex space-x-10">
-                <a href="dashboard.php" class="text-gray-700 dark:text-gray-200 hover:text-blue-600 transition">Dashboard</a>
-                <a href="transactions.php" class="text-gray-700 dark:text-gray-200 hover:text-blue-600 transition">Transactions</a>
-                <a href="mycard.php" class="text-gray-700 dark:text-gray-200 hover:text-blue-600 transition">My Cards</a>
-                <a href="expenses.php" class="text-gray-700 dark:text-gray-200 hover:text-blue-600 transition">Expenses</a>
-                <a href="incomes.php" class="text-gray-700 dark:text-gray-200 hover:text-blue-600 transition">Incomes</a>
+                <a href="app/Views/dashboard/dashboard.php" class="text-gray-700 dark:text-gray-200 hover:text-blue-600 transition">Dashboard</a>
+                <a href="app/Views/transactions/transactions.php" class="text-gray-700 dark:text-gray-200 hover:text-blue-600 transition">Transactions</a>
+                <a href="app/Views/cards/mycard.php" class="text-gray-700 dark:text-gray-200 hover:text-blue-600 transition">My Cards</a>
+                <a href="app/Views/expenses/expenses.php" class="text-gray-700 dark:text-gray-200 hover:text-blue-600 transition">Expenses</a>
+                <a href="app/Views/incomes/incomes.php" class="text-gray-700 dark:text-gray-200 hover:text-blue-600 transition">Incomes</a>
 
             </div>
 
@@ -141,11 +143,11 @@
     <div id="register" class="fixed inset-0 bg-black/40 backdrop-blur-md flex justify-center items-center z-50 
     
         <?php
-            if(!isset($_GET['register'])){
-                echo "hidden";
-            }else{
-                echo " ";
-            }
+        if (!isset($_GET['register'])) {
+            echo "hidden";
+        } else {
+            echo " ";
+        }
 
         ?>
     ">
@@ -166,11 +168,11 @@
     </div>
     <div id="otpPopup" class="fixed inset-0 bg-black/40 backdrop-blur-md flex justify-center items-center z-50 
         <?php
-            if(!isset($_GET['verify_otp'])){
-                    echo 'hidden';
-            }else{
-                echo ' ';
-            }
+        if (!isset($_GET['verify_otp'])) {
+            echo 'hidden';
+        } else {
+            echo ' ';
+        }
         ?>
     ">
         <form id="otpForm" class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg w-96 space-y-4"
@@ -178,7 +180,7 @@
             <h2 class="text-xl font-bold text-center dark:text-white">Verify OTP sent by mail</h2>
             <input type="text" name="otp" placeholder="otp"
                 class="w-full p-2 border rounded-lg dark:bg-gray-900 dark:text-white">
-            
+
             <button type="submit"
                 class="w-full bg-blue-600 hover:bg-blue-500 text-white py-2 rounded-lg transition">Register</button>
         </form>
