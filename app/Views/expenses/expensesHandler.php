@@ -1,30 +1,29 @@
-
 <?php
 session_start();
-require "../config/connexion.php";
-require "../models/expense.php";
+require_once "../../Core/database.php";
+require_once "../../Models/Expense.php";
 
-$exp = new Expense($conn);
+$db = new Database();
+$conn = $db->getConnection();
 
-$title = $_POST['expense_title'];
-$desc  = $_POST['expense_description'];
-$price = $_POST['expense_price'];
-$date  = $_POST['expense_date'];
-$category = $_POST['expense_categorie'];
-$isRecurrent = $_POST['expense_recurrency'];
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $data = [
+        'expenseId'    => $_GET['id'] ?? null, 
+        'user_id'      => $_SESSION['user_id'],
+        'expenseTitle' => $_POST['expense_title'],
+        'description'  => $_POST['expense_description'],
+        'price'        => $_POST['expense_price'],
+        'categorie'    => $_POST['expense_categorie'],
+        'dueDate'      => $_POST['expense_date'],
+        'isRecurent'   => $_POST['expense_recurrency']
+    ];
 
-$id = $_GET['id'] ?? null;
-$userId = $_SESSION['user_id'];
-if (!empty($id)) {
-    $exp->modifierExpense($id, $title, $desc, $price,$category, $date,$isRecurrent);
-    header("Location: ../expenses.php");
-    exit;
-} else {
-    $exp->ajouterExpense($title, $desc, $price,$category, $date,$userId,$isRecurrent);
-    header("Location: ../expenses.php");
+    $expense = new Expense($conn, $data);
+
+    if ($expense->save()) {
+        header("Location: ../expenses/expenses.php?msg=success");
+    } else {
+        header("Location: ../expenses/expenses.php?msg=error");
+    }
     exit;
 }
-
-
-
-?>

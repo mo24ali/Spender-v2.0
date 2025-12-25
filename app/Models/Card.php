@@ -7,20 +7,46 @@ require __DIR__ . "../config/database.php";
 class Card
 {
     private PDO $conn;
+    private $cardName;
+    private $owner;
+    private $nom;
+    private $user_id;
+    private $currentSold;
+    private $limite;
+    private $statue;
+    private $expireDate;
+    private $num;
+    private $primary_statue_user;
 
-    public function __construct(PDO $conn)
-    {
+  public function __construct(
+    string $cardName,
+    string $owner,
+    string $nom,
+    int $user_id,
+    float $currentSold,
+    float $limite,
+    string $statue,
+    string $expireDate,
+    string $num,
+    bool $primary_statue_user
+) {
+    $this->cardName             = $cardName;
+    $this->owner                = $owner;
+    $this->nom                  = $nom;
+    $this->user_id              = $user_id;
+    $this->currentSold          = $currentSold;
+    $this->limite               = $limite;
+    $this->statue               = $statue;
+    $this->expireDate           = $expireDate;
+    $this->num                  = $num;
+    $this->primary_statue_user  = $primary_statue_user;
+}
+
+    public function establishConnection($conn){
         $this->conn = $conn;
     }
-
     public function addCard(
-        int $userId,
-        float $limite,
-        string $name,
-        float $currentSold,
-        string $number,
-        string $expireDate,
-        string $stat
+        Card $crd
     ) {
         $query = "
             INSERT INTO carte (nom, user_id, currentSold, limite, statue, expireDate, num)
@@ -30,13 +56,13 @@ class Card
         $stmt = $this->conn->prepare($query);
 
         return $stmt->execute([
-            ':name' => $name,
-            ':user_id' => $userId,
-            ':currentSold' => $currentSold,
-            ':limite' => $limite,
-            ':stat' => $stat,
-            ':expireDate' => $expireDate,
-            ':num' => $number
+            ':name' => $crd->cardName,
+            ':user_id' => $crd->user_id,
+            ':currentSold' => $crd->currentSold,
+            ':limite' => $crd->limite,
+            ':stat' => $crd->statue,
+            ':expireDate' => $crd->expireDate,
+            ':num' => $crd->num
         ]);
     }
 
@@ -51,7 +77,5 @@ class Card
         ]);
     }
 
-    public function editCard($cardId){
-
-    }
+    public function editCard($cardId) {}
 }

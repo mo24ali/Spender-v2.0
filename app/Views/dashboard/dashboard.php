@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <title>Dashboard</title>
+    <script src="../../../js/forms.js"></script>
+    <script src="../../../js/chart.js"></script>
 </head>
 
 <?php
@@ -23,11 +25,7 @@ $conn = $con->getConnection();
 <body class="bg-gradient-to-br from-gray-950 via-gray-900 to-gray-800 text-white">
 
     <!-- NAVBAR -->
-   
-        <?php
-        
-            require "../partials/nav.php";
-        ?>
+        <?php require "../partials/nav.php"; ?>
     <!-- MAIN CONTENT -->
     <main class="max-w-6xl mx-auto mt-20 px-4">
         <div class="flex items-center justify-between mb-10">
@@ -278,19 +276,16 @@ $conn = $con->getConnection();
         let exp = <?php echo json_encode($dataExpense) ?>;
         let inc = <?php echo json_encode($dataIncome) ?>;
     </script>
-    <script src="../../js/chart.js"></script>
-    <script src="js/forms.js"></script>
-
     <script>
-        // GSAP Animations
+      // overall navbar animation 
 
         // Navbar slide-in
-        gsap.to("#navbar", {
-            duration: 1,
-            y: 0,
-            opacity: 1,
-            ease: "power2.out"
-        });
+            gsap.to("#navbar", {
+                duration: 1,
+                y: 0,
+                opacity: 1,
+                ease: "power2.out"
+            });
         let burgerBtn = document.getElementById('burgerBtn');
         let mobileMenu = document.getElementById('mobileMenu');
 

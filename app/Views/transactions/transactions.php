@@ -10,7 +10,9 @@
 </head>
 
 <?php
-require "config/connexion.php";
+require "../../Core/database.php";
+    $db = new Database();
+    $conn = $db->getConnection();
 session_start();
 $userId = $_SESSION['user_id'];
 ?>
@@ -41,8 +43,8 @@ $userId = $_SESSION['user_id'];
                             Total paid:
                             <?php
                             $query = "select sum(price) as total from expense where state='paid'";
-                            $request = mysqli_query($conn, $query);
-                            $rows = mysqli_fetch_assoc($request);
+                            $request = $conn->query($query);
+                            $rows = $request->fetch(PDO::FETCH_ASSOC);
                             echo "<span class='text-emerald-400 font-bold ml-1'>{$rows['total']} $</span>";
                             ?>
                         </p>
@@ -63,8 +65,8 @@ $userId = $_SESSION['user_id'];
                                             from expense 
                                             where user_id=$userId 
                                             and state='paid'";
-                                $request = mysqli_query($conn, $query);
-                                while ($rows = mysqli_fetch_assoc($request)) {
+                                $request = $conn->query($query);
+                                while ($rows = $request->fetch(PDO::FETCH_ASSOC)) {
                                     echo "
                                 <tr class='hover:bg-white/[0.03] transition-colors'>
                                     <td class='px-6 py-4 font-medium'>{$rows['expenseTitle']}</td>
@@ -105,8 +107,8 @@ $userId = $_SESSION['user_id'];
                                 WHERE user_id=$userId AND isRecurent='YES'
                                 ORDER BY event_date
                             ";
-                                $request = mysqli_query($conn, $query);
-                                while ($rows = mysqli_fetch_assoc($request)) {
+                                $request = $conn->query($query);
+                                while ($rows = $request->fetch(PDO::FETCH_ASSOC)) {
                                     echo "
                                 <tr class='hover:bg-white/[0.03] transition-colors'>
                                     <td class='px-6 py-3'>{$rows['title']}</td>
@@ -138,8 +140,8 @@ $userId = $_SESSION['user_id'];
                             <tbody class="divide-y divide-white/5">
                                 <?php
                                 $query = "select transferId, idReceiver , amount ,daySent from transfert where idSender=$userId";
-                                $request = mysqli_query($conn, $query);
-                                while ($rows = mysqli_fetch_assoc($request)) {
+                                $request = $conn->query($query);
+                                while ($rows = $request->fetch(PDO::FETCH_ASSOC)) {
                                     echo "
                             <tr class='hover:bg-white/[0.03] transition-colors'>
                                 <td class='px-6 py-3 text-gray-500'>#{$rows['transferId']}</td>
@@ -162,8 +164,8 @@ $userId = $_SESSION['user_id'];
                             Total gained:
                             <?php
                             $query = "select sum(price) as total from income";
-                            $request = mysqli_query($conn, $query);
-                            $rows = mysqli_fetch_assoc($request);
+                            $request = $conn->query($query);
+                            $rows = $request->fetch(PDO::FETCH_ASSOC);
                             echo "<span class='text-indigo-400 font-bold ml-1'>{$rows['total']} $</span>";
                             ?>
                         </p>
@@ -182,8 +184,8 @@ $userId = $_SESSION['user_id'];
                                 $query = "select incomeTitle, price, getIncomeDate 
                                             from income 
                                                 where user_id=$userId";
-                                $request = mysqli_query($conn, $query);
-                                while ($rows = mysqli_fetch_assoc($request)) {
+                                $request = $conn->query($query);
+                                while ($rows = $request->fetch(PDO::FETCH_ASSOC)) {
                                     echo "
                                 <tr class='hover:bg-white/[0.03] transition-colors'>
                                     <td class='px-6 py-4 font-medium'>{$rows['incomeTitle']}</td>

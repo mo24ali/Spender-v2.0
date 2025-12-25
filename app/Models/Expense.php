@@ -1,73 +1,84 @@
 <?php
-require __DIR__ . "../config/connexion.php";
-require __DIR__ . "../config/database.php";
+
 class Expense
 {
     private $conn;
-    private Categorie $categorie;
+    private $expenseId;
+    private $expenseTitle;
+    private $description;
+    private $user_id;
+    private $price;
+    private $categorie;
+    private $dueDate;
+    private $isRecurent;
 
-    public function __construct($conn)
+    public function __construct($db, $data = [])
     {
-        $this->conn = $conn;
+        $this->conn = $db;
+        
+        $this->expenseId    = $data['expenseId'] ?? null;
+        $this->expenseTitle = $data['expenseTitle'] ?? null;
+        $this->description  = $data['description'] ?? null;
+        $this->user_id      = $data['user_id'] ?? null;
+        $this->price        = $data['price'] ?? 0;
+        $this->categorie    = $data['categorie'] ?? null;
+        $this->dueDate      = $data['dueDate'] ?? null;
+        $this->isRecurent   = $data['isRecurent'] ?? 'NO';
     }
 
-
-    public function ajouterExpense($expenseTitle, $expenseDescription, $price, $categorie, $dueDate, $userId, $isRecurrent)
+    
+    public function save()
     {
-        $request = "insert into expense(expenseTitle,description,user_id,price,categorie,dueDate,isRecurent) 
-            values ('$expenseTitle','$expenseDescription','$userId',$price,'$categorie','$dueDate','$isRecurrent')";
-        $query = mysqli_query($this->conn, $request);
-        if (isset($query)) {
-            header("Location: ../expenses.php");
-        }
-    }
-    public function supprimerExpense($expenseId)
-    {
-        $request = "delete from expense where expenseId=$expenseId";
-        $query = mysqli_query($this->conn, $request);
-        if (isset($query)) {
-            header("Location: ../expenses.php");
-        }
-    }
-    public function modifierExpense($expenseId, $expenseTitle, $newExpenseDesc, $newExpensePrice, $categorie, $expDueDate, $isRecurrent)
-    {
-        $request = "update expense 
-                        set expenseTitle='$expenseTitle', 
-                            description='$newExpenseDesc', 
-                            price='$newExpensePrice',
-                            categorie='$categorie', 
-                            dueDate='$expDueDate',
-                            isRecurent='$isRecurrent' 
-                        where expenseId='$expenseId'";
-        $query = mysqli_query($this->conn, $request); /////////////////////
-        if (isset($query)) {
-            header("Location: ../expenses.php");
+        if ($this->expenseId) {
+            return $this->update();
+            
+        } else {
+            return $this->create();
+            
         }
     }
 
-
-    public function getAll($userID)
+    private function create()
     {
-        $stmt = $this->conn->prepare("Select * from expense where user_id=?");
-        $stmt->bind_param($userID);
-        $stmt->execute();
+        $sql = "INSERT INTO expense (expenseTitle, description, user_id, price, categorie, dueDate, isRecurent) 
+                VALUES (?, ?, ?, ?, ?, ?, ?)";
+        $stmt = $this->conn->prepare($sql);
+        return $stmt->execute([
+            $this->expenseTitle,
+            $this->description,
+            $this->user_id,
+            $this->price,
+            $this->categorie,
+            $this->dueDate,
+            $this->isRecurent
+        ]);
     }
-    public function getById($userID, $expenseId)
-    {
-        $stmt = $this->conn->prepare("Select * from expense where user_id=? and expenseId=?");
-        $stmt->bind_param($userID,$expenseId);
-        $stmt->execute();
-    }
-    public function getByCategory($categoryId) {
-        $stmt = $this->conn->prepare("Select * from expense where categorie=?");
-        $stmt->bind_param($categoryId);
-        $stmt->execute();
-    }
-    public function setCategorie(Categorie $cat){
-        $this->categorie = $cat->getCategoryName();
 
+    private function update()
+    {
+        $sql = "UPDATE expense SET 
+                expenseTitle = ?, description = ?, price = ?, categorie = ?, dueDate = ?, isRecurent = ? 
+                WHERE expenseId = ? AND user_id = ?";
+        $stmt = $this->conn->prepare($sql);
+        return $stmt->execute([
+            $this->expenseTitle,
+            $this->description,
+            $this->price,
+            $this->categorie,
+            $this->dueDate,
+            $this->isRecurent,
+            $this->expenseId,
+            $this->user_id
+        ]);
     }
-    public function getCategorie(): Categorie{
-        return $this->categorie;
+
+    public function delete()
+    {
+        if (!$this->expenseId) return false;
+        $stmt = $this->conn->prepare("DELETE FROM expense WHERE expenseId = ? AND user_id = ?");
+        return $stmt->execute([$this->expenseId, $this->user_id]);
     }
+
+    public function setExpenseId($id) { $this->expenseId = $id; }
+    public function getExpenseId() { return $this->expenseId; }
 }

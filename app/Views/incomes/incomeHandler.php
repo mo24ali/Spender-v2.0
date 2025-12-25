@@ -1,30 +1,32 @@
 <?php
-require "../config/connexion.php";
-require "../models/income.php";
-
-
 session_start();
-$income = new Income($conn);
+require_once "../../Core/database.php";
+require_once "../../Models/Income.php";
 
+$db = new Database();
+$conn = $db->getConnection();
 
-$title = $_POST['income_title'];
-$description = $_POST['income_description'];
-$price = $_POST['income_price'];
-$date = $_POST['income_date'];
-$category = $_POST['income_categorie'];
-$id = $_GET['id'] ?? null;
-$userId = $_SESSION['user_id'];
-$isRecurent = $_POST['income_recurrency'];
-if (!empty($id)) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $data = [
+        'user_id'       => $_SESSION['user_id'],
+        'incomeTitle'   => $_POST['income_title'],
+        'description'   => $_POST['income_description'],
+        'price'         => $_POST['income_price'],
+        'getIncomeDate' => $_POST['income_date'],
+        'isRecurent'    => $_POST['income_recurrency'],
+        'categorie'     => $_POST['income_categorie']
+    ];
 
-    $income->modifierIncome($id, $title, $description, $price,$category, $date, $isRecurent);
-    header("Location: ../incomes.php");
-    exit;
-} else {
+    $income = new Income($conn, $data);
 
-    $income->ajouterIncome($title, $description, $price,$category, $date,$userId, $isRecurent);
+    if (isset($_GET['id']) && is_numeric($_GET['id'])) {
+        $income->setIncomeId($_GET['id']);
+    }
 
-    header("Location: ../incomes.php");
+    if ($income->save()) {
+        header("Location: incomes.php?success=1");
+    } else {
+        echo "Something went wrong.";
+    }
     exit;
 }
-?>

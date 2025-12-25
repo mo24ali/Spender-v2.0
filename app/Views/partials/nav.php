@@ -6,7 +6,7 @@
             </a>
 
             <div class="hidden lg:flex space-x-10">
-                <a href="#" class="text-gray-700 dark:text-gray-200 hover:text-blue-600 transition">Dashboard</a>
+                <a href="../dashboard/dashboard.php" class="text-gray-700 dark:text-gray-200 hover:text-blue-600 transition">Dashboard</a>
                 <a href="../transactions/transactions.php" class="text-gray-700 dark:text-gray-200 hover:text-blue-600 transition">Transactions</a>
                 <a href="../cards/mycard.php" class="text-gray-700 dark:text-gray-200 hover:text-blue-600 transition">My Cards</a>
                 <a href="../expenses/expenses.php" class="text-gray-700 dark:text-gray-200 hover:text-blue-600 transition">Expenses</a>
@@ -32,7 +32,7 @@
                 <a href="incomes.php" class="px-4 py-3 border-b border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white">Incomes</a>
                 <a href="support.php" class="px-4 py-3 border-b border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white">Support</a>
 
-                <a href="auth/logout.php">
+                <a href="../auth/logout.php">
                     <button id="" class="mx-4 my-3 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-500 transition">
                         Logout
                     </button>

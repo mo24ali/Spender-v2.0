@@ -7,8 +7,7 @@
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
 
-    <script src="js/forms.js"></script>
-    <script src="js/auth.js"></script>
+    <script src="../../../js/forms.js"></script>
     <title>Expenses</title>
 </head>
 
@@ -16,13 +15,16 @@
 <body class="bg-gray-50 dark:bg-gray-900 dark:text-white">
     <?php
     session_start();
-
+    require "../../Core/database.php";
+    $db = new Database();
+    $conn = $db->getConnection();
     ?>
-      
-        <?php
-        
-            require "../partials/nav.php";
-        ?>
+    <!-- NAVBAR -->
+
+    <?php
+
+    require "../partials/nav.php";
+    ?>
 
     <main class="max-w-6xl mx-auto mt-20 px-4">
         <div class="flex flex-col mb-10 space-y-4">
@@ -92,8 +94,8 @@
 
             <tbody>
                 <?php
-                require "config/connexion.php";
                 $userId = $_SESSION['user_id'];
+                echo $userId;
                 $catergory;
                 $monthFilter;
                 $priceSort;
@@ -123,9 +125,9 @@
 
 
                 $request = "SELECT * FROM expense where user_id=$userId and state='not paid' $catergoryCondition $monthCondition $priceSortCondition";
-                $query = mysqli_query($conn, $request);
+                $query = $conn->query($request);
 
-                while ($row = mysqli_fetch_assoc($query)) {
+                while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
                     $id = $row['expenseId'];
 
                     echo "<tr class='odd:bg-neutral-primary-soft even:bg-neutral-secondary-soft border-b border-default hover:bg-neutral-secondary transition'>";
@@ -139,16 +141,16 @@
 
                     echo "
                 <td class='px-6 py-3 flex gap-2'>
-                    <a href='update_handlers/updateExpense.php?id={$id}' 
+                    <a href='updateExpense.php?id={$id}' 
                        class='px-3 py-1 rounded-md bg-blue-500 text-white hover:bg-blue-600 transition text-xs'>
                         Edit
                     </a>
-                    <a href='delete_handlers/deleteExpense.php?id={$id}' 
+                    <a href='deleteExpense.php?id={$id}' 
                        class='px-3 py-1 rounded-md bg-red-500 text-white hover:bg-red-600 transition text-xs'>
                         Delete
                     </a>
                     <button>
-                        <a href='transactions_handler/chooseCard.php?expenseId=$id' 
+                        <a href='../cards/chooseCard.php?expenseId=$id' 
                        class='px-3 py-1 rounded-md bg-green-500 text-white hover:bg-green-600 transition text-xs'>
                         Pay
                     </a>
@@ -172,7 +174,7 @@
             <h2 class="text-lg font-semibold mb-4">Set Category Limit</h2>
 
             <form method="POST" action="categoryLimitHandler/categoryLimit.php" class="space-y-4">
-                
+
                 <label for="expenseCategoryLimit" class="block text-gray-700 font-medium">Category</label>
                 <select id="expenseCategoryLimit" name="categoryNameLimit"
                     class="bg-gray-700 text-white px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 w-full" required>
@@ -226,9 +228,9 @@
 
             <?php
             $cardQuery = "SELECT * FROM carte WHERE user_id = $userId";
-            $request = mysqli_query($conn, $cardQuery);
+            $request = $conn->query($cardQuery);
             ?>
-            <?php while ($card = mysqli_fetch_assoc($request)): ?>
+            <?php while ($card = $request->fetch(PDO::FETCH_ASSOC)): ?>
                 <div class="border p-3 rounded mb-2 flex justify-between items-center">
                     <div>
                         <p class="font-medium"><?= htmlspecialchars($card['nom']) ?></p>
@@ -266,7 +268,6 @@
     <?php echo isset($_GET['id']) ? '' : 'hidden'; ?>">
 
         <?php
-        require "config/connexion.php";
 
         $expense = null;
         $modalId = null;
@@ -274,12 +275,12 @@
         if (isset($_GET['id'])) {
             $modalId = $_GET['id'];
             $query = "SELECT * FROM expense WHERE expenseId = $modalId";
-            $request = mysqli_query($conn, $query);
-            $expense = mysqli_fetch_assoc($request);
+            $request = $conn->query($query);
+            $expense = $request->fetch(PDO::FETCH_ASSOC);
         }
         ?>
 
-        <form id="addExpenseForm" action="form_handlers/expensesHandler.php<?php echo "?id=" . $modalId ?>" method="post"
+        <form id="addExpenseForm" action="expensesHandler.php<?php echo "?id=" . $modalId ?>" method="post"
             class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg w-96 space-y-4">
 
             <label for="expenseName" class="text-white">Expense title</label>
@@ -338,7 +339,7 @@
     </div>
 
     <script>
-        // GSAP Animations
+        // overall navbar animation 
 
         // Navbar slide-in
         gsap.to("#navbar", {

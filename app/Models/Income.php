@@ -1,76 +1,72 @@
 <?php
-require __DIR__ . "../config/connexion.php";
-require __DIR__ . "../config/database.php";
+
 class Income
 {
     private $conn;
-    private Categorie $categorie;
+    private $incomeId;
+    private $incomeTitle;
+    private $description;
+    private $user_id;
+    private $price;
+    private $getIncomeDate;
+    private $isRecurent;
+    private $categorie;
 
-    public function __construct($conn)
+    public function __construct($db, $data = [])
     {
-        $this->conn = $conn;
+        $this->conn = $db;
+        
+        $this->user_id       = $data['user_id'] ?? null;
+        $this->incomeTitle   = $data['incomeTitle'] ?? null;
+        $this->price         = $data['price'] ?? 0;
+        $this->getIncomeDate = $data['getIncomeDate'] ?? null;
+        $this->isRecurent    = $data['isRecurent'] ?? 'NO';
+        $this->description   = $data['description'] ?? null;
+        $this->categorie     = $data['categorie'] ?? null;
     }
 
-
-    public function ajouterIncome($incomeTitle, $incomeDescription, $price, $categorie, $getDate, $userId, $isRecurent)
+    public function save()
     {
-        $request = "insert into income(incomeTitle , description , user_id , price ,categorie, getIncomeDate,isRecurent) 
-                        values ('$incomeTitle','$incomeDescription','$userId','$price','$categorie','$getDate','$isRecurent')";
-        $query = mysqli_query($this->conn, $request);
-        if (isset($query)) {
-            header("Location: ../incomes.php");
-        }
-    }
-    public function supprimerIncome($incomeId)
-    {
-        $request = "delete from income where incomeId=$incomeId";
-        $query = mysqli_query($this->conn, $request);
-        if (isset($query)) {
-            header("Location: ../incomes.php");
-        }
-    }
-    public function modifierIncome($incomeId, $incomeTitle, $newincomeDesc, $newincomePrice, $categorie, $incGetDate, $isRecurent)
-    {
-        $request = "update income 
-                        set incomeTitle='$incomeTitle', 
-                            description='$newincomeDesc', 
-                            price='$newincomePrice', 
-                            categorie='$categorie',
-                            getIncomeDate='$incGetDate' ,
-                            isRecurent='$isRecurent'
-                        where incomeId='$incomeId';";
-        $query = mysqli_query($this->conn, $request);
-        if (isset($query)) {
-            header("Location: ../incomes.php");
+        if ($this->incomeId) {
+            return $this->update();
+        } else {
+            return $this->create();
         }
     }
 
-
-    public function getAll($userID)
+    private function create()
     {
-        $stmt = $this->conn->prepare("Select * from income where user_id=?");
-        $stmt->bind_param($userID);
-        $stmt->execute();
-    }
-    public function getById($userID, $expenseId)
-    {
-        $stmt = $this->conn->prepare("Select * from income where user_id=? and expenseId=?");
-        $stmt->bind_param($userID, $expenseId);
-        $stmt->execute();
-    }
-    public function getByCategory(Categorie $categ)
-    {
-        $stmt = $this->conn->prepare("Select * from income where categorie=?");
- 
-        $stmt->execute([$categ->getCategoryName()]);
+        $sql = "INSERT INTO income (incomeTitle, description, user_id, price, categorie, getIncomeDate, isRecurent) 
+                VALUES (?, ?, ?, ?, ?, ?, ?)";
+        $stmt = $this->conn->prepare($sql);
+        return $stmt->execute([
+            $this->incomeTitle, 
+            $this->description, 
+            $this->user_id, 
+            $this->price, 
+            $this->categorie, 
+            $this->getIncomeDate, 
+            $this->isRecurent
+        ]);
     }
 
-    public function setCategorie(Categorie $cat)
+    private function update()
     {
-        $this->categorie = $cat->getCategoryName();
+        $sql = "UPDATE income SET incomeTitle=?, description=?, price=?, categorie=?, getIncomeDate=?, isRecurent=? 
+                WHERE incomeId = ? AND user_id = ?";
+        $stmt = $this->conn->prepare($sql);
+        return $stmt->execute([
+            $this->incomeTitle, 
+            $this->description, 
+            $this->price, 
+            $this->categorie, 
+            $this->getIncomeDate, 
+            $this->isRecurent, 
+            $this->incomeId, 
+            $this->user_id
+        ]);
     }
-    public function getCategorie(): Categorie
-    {
-        return $this->categorie;
-    }
+
+    // Setters allow you to change state after instantiation
+    public function setIncomeId($id) { $this->incomeId = $id; }
 }

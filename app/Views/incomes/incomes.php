@@ -8,7 +8,7 @@
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
 
     <script src="js/auth.js"></script>
-    <script src="js/forms.js"></script>
+    <script src="../../../js/forms.js"></script>
     <title>Incomes</title>
 </head>
 
@@ -17,13 +17,16 @@
 <body class="bg-gray-50 dark:bg-gray-900 dark:text-white">
     <?php
     session_start();
+    require "../../Core/database.php";
+    $db = new Database();
+    $conn = $db->getConnection();
     ?>
     <!-- NAVBAR -->
-      
-        <?php
-        
-            require "../partials/nav.php";
-        ?>
+
+    <?php
+
+    require "../partials/nav.php";
+    ?>
 
     <!-- MAIN CONTENT -->
     <main class="max-w-6xl mx-auto mt-20 px-4">
@@ -94,13 +97,12 @@
 
             <tbody>
                 <?php
-                require "config/connexion.php";
 
                 $userId = $_SESSION['user_id'];
-                $catergory ;
-                $monthFilter ;
-                $priceSort;
-                if(isset($_GET['priceFilter'])){
+                $catergory=null;
+                $monthFilter=null;
+                $priceSort=null;
+                if (isset($_GET['priceFilter'])) {
                     $priceSort = $_GET['priceFilter'];
                 }
                 if (isset($_GET['incomeCategory'])) {
@@ -112,7 +114,7 @@
                 $catergoryCondition = "";
                 $monthCondition = "";
                 $priceSortCondition = "";
-                if(isset($priceSort)){
+                if (isset($priceSort)) {
                     $priceSortCondition = "ORDER BY price desc";
                 }
                 if (isset($catergory)) {
@@ -122,10 +124,13 @@
                     $monthCondition = "AND MONTH(getIncomeDate) = '$monthFilter'";
                 }
 
-                $request = "SELECT * FROM income where user_id=$userId $catergoryCondition $monthCondition $priceSortCondition";
-                $query = mysqli_query($conn, $request);
+                $request = "SELECT * 
+                            FROM income 
+                            where user_id=$userId $catergoryCondition $monthCondition $priceSortCondition";
+                $query = $conn->query($request);
 
-                while ($row = mysqli_fetch_assoc($query)) {
+
+                while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
                     $id = $row['incomeId'];
 
                     echo "<tr class='odd:bg-neutral-primary-soft even:bg-neutral-secondary-soft border-b border-default hover:bg-neutral-secondary transition'>";
@@ -161,7 +166,7 @@
     <!-- ADD INCOME MODAL -->
     <div id="addIncome" class="fixed inset-0 bg-black/40 backdrop-blur-md flex justify-center items-center z-50 <?php echo isset($_GET['id']) ? '' : 'hidden' ?>">
         <?php
-        require "config/connexion.php";
+       
 
         $income = null;
         $modalId = null;
@@ -169,11 +174,11 @@
         if (isset($_GET['id'])) {
             $modalId = $_GET['id'];
             $query = "SELECT * FROM income WHERE incomeId = $modalId";
-            $request = mysqli_query($conn, $query);
-            $income = mysqli_fetch_assoc($request);
+            $request = $conn->query($query);
+            $income = $request->fetch(PDO::FETCH_ASSOC);
         }
         ?>
-        <form id="addIncomeForm" action="form_handlers/incomeHandler.php<?php echo "?id=" . $modalId ?>" method="post" class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg w-96 space-y-4">
+        <form id="addIncomeForm" action="incomeHandler.php<?php echo "?id=" . $modalId ?>" method="post" class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg w-96 space-y-4">
 
             <label for="incomeName" class="text-white">Income title</label>
             <input type="text" id="incomeName" name="income_title" class="w-full p-2 rounded-lg border dark:bg-gray-900 dark:text-white" value="<?php echo $income['incomeTitle'] ?? ''; ?>">
@@ -200,13 +205,13 @@
 
             </select>
 
-            
+
             <label for="incomeRecurrency" class="text-white">Is it recurrent?</label>
             <select id="incomeRecurrency" name="income_recurrency"
                 class="w-full p-2 rounded-lg border dark:bg-gray-900 dark:text-white">
 
                 <option value="" disabled selected>recurrent</option>
-                <option value="YES"  <?php if (($income['isRecurent'] ?? '') == 'YES') echo 'selected'; ?>>Yes</option>
+                <option value="YES" <?php if (($income['isRecurent'] ?? '') == 'YES') echo 'selected'; ?>>Yes</option>
                 <option value="NO" <?php if (($income['isRecurent'] ?? '') == 'NO') echo 'selected'; ?>>No</option>
             </select>
             <label for="incomeDate" class="text-white">Getting income date :</label>
@@ -223,16 +228,16 @@
         </form>
     </div>
 
-    <script>
-        // GSAP Animations
+   <script>
+      // overall navbar animation 
 
         // Navbar slide-in
-        gsap.to("#navbar", {
-            duration: 1,
-            y: 0,
-            opacity: 1,
-            ease: "power2.out"
-        });
+            gsap.to("#navbar", {
+                duration: 1,
+                y: 0,
+                opacity: 1,
+                ease: "power2.out"
+            });
         let burgerBtn = document.getElementById('burgerBtn');
         let mobileMenu = document.getElementById('mobileMenu');
 
