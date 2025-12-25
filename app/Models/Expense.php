@@ -11,6 +11,7 @@ class Expense
     private $categorie;
     private $dueDate;
     private $isRecurent;
+    private $state;
 
     public function __construct($db, $data = [])
     {
@@ -24,6 +25,7 @@ class Expense
         $this->categorie    = $data['categorie'] ?? null;
         $this->dueDate      = $data['dueDate'] ?? null;
         $this->isRecurent   = $data['isRecurent'] ?? 'NO';
+        $this->state   = $data['state'] ?? 'NOT PAID';
     }
 
     
@@ -75,10 +77,12 @@ class Expense
     public function delete()
     {
         if (!$this->expenseId) return false;
-        $stmt = $this->conn->prepare("DELETE FROM expense WHERE expenseId = ? AND user_id = ?");
-        return $stmt->execute([$this->expenseId, $this->user_id]);
+        $stmt = $this->conn->prepare("DELETE FROM expense WHERE expenseId = ?");
+        return $stmt->execute([$this->expenseId]);
     }
 
     public function setExpenseId($id) { $this->expenseId = $id; }
     public function getExpenseId() { return $this->expenseId; }
+
+    
 }
