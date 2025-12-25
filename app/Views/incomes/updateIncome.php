@@ -1,12 +1,9 @@
 <?php
-    require "../config/connexion.php";
-    require "../models/income.php";
-
-
-    //validate the update 
+     require_once "../../Core/database.php";
+    require "../../Models/Income.php";
     $id = $_GET['id'];
-    if(isset($_GET['id'])){
-        header("Location: ../incomes.php?id=$id");
+    if(isset($id)){
+        header("Location: ../incomes/incomes.php?id=$id");
     }
 
 ?>

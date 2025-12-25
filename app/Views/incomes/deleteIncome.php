@@ -1,10 +1,28 @@
 <?php
 
-    require "../config/connexion.php";
-    require "../models/income.php";
-
-
+    require_once "../../Core/database.php";
+    require "../../Models/Income.php";
+    session_start();
+    $userId = $_SESSION['user_id'];
     $id = $_GET['id'];
-    $inc = new Income($conn);
-    $inc -> supprimerIncome($id);
+    
+    $db = new Database();
+    $conn = $db->getConnection();
+    $deletedData = getIncomeById($id,$conn);
+    
+    $inc = new Income($conn,$deletedData);
+    if($inc->delete()){
+        header("Location: incomes.php");
+    }else{
+        echo "not deleted";
+    }
+
+    function getIncomeById($id,$conn){
+        $query = "select * from income where incomeId=?";
+        $stmt = $conn->prepare($query);
+        $stmt->execute([$id]);
+        $rows = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $rows;
+    }
+
 ?>

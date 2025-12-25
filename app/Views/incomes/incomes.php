@@ -144,11 +144,11 @@
 
                     echo "
                 <td class='px-6 py-3 flex gap-2'>
-                    <a href='update_handlers/updateIncome.php?id={$id}' 
+                    <a href='updateIncome.php?id={$id}' 
                        class='px-3 py-1 rounded-md bg-blue-500 text-white hover:bg-blue-600 transition text-xs'>
                         Edit
                     </a>
-                    <a href='delete_handlers/deleteIncome.php?id={$id}' 
+                    <a href='deleteIncome.php?id={$id}' 
                        class='px-3 py-1 rounded-md bg-red-500 text-white hover:bg-red-600 transition text-xs'>
                         Delete
                     </a>

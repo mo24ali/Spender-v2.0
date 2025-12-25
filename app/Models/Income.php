@@ -15,7 +15,7 @@ class Income
     public function __construct($db, $data = [])
     {
         $this->conn = $db;
-        
+        $this->incomeId      = $data['incomeId'] ?? null;
         $this->user_id       = $data['user_id'] ?? null;
         $this->incomeTitle   = $data['incomeTitle'] ?? null;
         $this->price         = $data['price'] ?? 0;
@@ -69,4 +69,12 @@ class Income
 
     // Setters allow you to change state after instantiation
     public function setIncomeId($id) { $this->incomeId = $id; }
+
+
+    public function delete(){
+        if(!$this->incomeId) return false;
+        $query = "DELETE FROM income WHERE incomeId=?";
+        $stmt = $this->conn->prepare($query);
+        return $stmt->execute([$this->incomeId]);
+    }
 }
