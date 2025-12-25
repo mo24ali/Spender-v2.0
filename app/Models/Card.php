@@ -50,4 +50,8 @@ class Card
             ':id' => $cardId
         ]);
     }
+
+    public function editCard($cardId){
+
+    }
 }

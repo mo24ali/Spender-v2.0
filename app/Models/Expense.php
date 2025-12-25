@@ -4,6 +4,7 @@ require __DIR__ . "../config/database.php";
 class Expense
 {
     private $conn;
+    private Categorie $categorie;
 
     public function __construct($conn)
     {
@@ -61,5 +62,12 @@ class Expense
         $stmt = $this->conn->prepare("Select * from expense where categorie=?");
         $stmt->bind_param($categoryId);
         $stmt->execute();
+    }
+    public function setCategorie(Categorie $cat){
+        $this->categorie = $cat->getCategoryName();
+
+    }
+    public function getCategorie(): Categorie{
+        return $this->categorie;
     }
 }

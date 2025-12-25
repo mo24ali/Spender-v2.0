@@ -4,6 +4,7 @@ require __DIR__ . "../config/database.php";
 class Income
 {
     private $conn;
+    private Categorie $categorie;
 
     public function __construct($conn)
     {
@@ -57,10 +58,19 @@ class Income
         $stmt->bind_param($userID, $expenseId);
         $stmt->execute();
     }
-    public function getByCategory($categoryId)
+    public function getByCategory(Categorie $categ)
     {
         $stmt = $this->conn->prepare("Select * from income where categorie=?");
-        $stmt->bind_param($categoryId);
-        $stmt->execute();
+ 
+        $stmt->execute([$categ->getCategoryName()]);
+    }
+
+    public function setCategorie(Categorie $cat)
+    {
+        $this->categorie = $cat->getCategoryName();
+    }
+    public function getCategorie(): Categorie
+    {
+        return $this->categorie;
     }
 }

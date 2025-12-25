@@ -7,6 +7,14 @@ class Database
 {
     private static PDO $conn;
 
+
+    // private static function init(){
+    //     if(is_null(self::$conn)){
+    //         self::$conn = new self();
+
+    //     }
+    //     return self::$conn;
+    // }
     public function __construct()
     {
         $config = require __DIR__ . '/../config/connexion.php';

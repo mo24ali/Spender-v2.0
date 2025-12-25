@@ -18,29 +18,11 @@ $id = $_SESSION['user_id'];
 <body class="min-h-screen bg-gradient-to-br from-gray-950 via-gray-900 to-gray-800 text-white">
 
     <!-- NAVBAR -->
-    <header id="navbar"
-        class="sticky top-0 z-50 bg-gray-900/80 backdrop-blur border-b border-white/10 shadow-lg opacity-0 -translate-y-10">
-        <nav class="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
-            <a href="index.php"
-                class="text-2xl font-extrabold bg-gradient-to-r from-blue-400 to-indigo-500 bg-clip-text text-transparent">
-                Spender
-            </a>
-
-            <div class="hidden lg:flex gap-8 text-sm font-medium">
-                <a href="dashboard.php" class="hover:text-blue-400 transition">Dashboard</a>
-                <a href="transactions.php" class="hover:text-blue-400 transition">Transactions</a>
-                <a href="mycard.php" class="text-blue-400">My Cards</a>
-                <a href="expenses.php" class="hover:text-blue-400 transition">Expenses</a>
-                <a href="incomes.php" class="hover:text-blue-400 transition">Incomes</a>
-            </div>
-
-            <a href="auth/logout.php"
-                class="hidden lg:inline-block rounded-xl bg-blue-600 px-5 py-2 text-sm font-semibold hover:bg-blue-500 transition">
-                Logout
-            </a>
-        </nav>
-    </header>
-
+    
+        <?php
+        
+            require "../partials/nav.php";
+        ?>
     <!-- HEADER -->
     <section class="pt-24 text-center">
         <h2 class="text-sm uppercase tracking-widest text-indigo-400">Wallet</h2>
@@ -192,13 +174,40 @@ $id = $_SESSION['user_id'];
     </div>
     <!-- ANIMATIONS -->
     <script>
+        // GSAP Animations
+
+        // Navbar slide-in
         gsap.to("#navbar", {
-            duration: 0.8,
+            duration: 1,
             y: 0,
             opacity: 1,
-            ease: "power3.out"
+            ease: "power2.out"
+        });
+        let burgerBtn = document.getElementById('burgerBtn');
+        let mobileMenu = document.getElementById('mobileMenu');
+
+        burgerBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            if (!mobileMenu.classList.contains('hidden')) {
+                gsap.fromTo(mobileMenu, {
+                    y: -20,
+                    opacity: 0
+                }, {
+                    y: 0,
+                    opacity: 1,
+                    duration: 0.3,
+                    ease: "power2.out"
+                });
+            }
         });
 
+        document.addEventListener('click', (e) => {
+            if (!mobileMenu.contains(e.target) && !burgerBtn.contains(e.target)) {
+                mobileMenu.classList.add('hidden');
+            }
+        });
+    </script>
+    <script>
         document.getElementById("addCardBtn").addEventListener("click", () => {
             document.getElementById("addCard").classList.toggle("hidden");
         });

@@ -5,7 +5,7 @@ require __DIR__ . "../config/database.php";
         private $senderId;
         private $receiverId;
         private $conn;
-
+        
         public function __construct()
         {   
            
