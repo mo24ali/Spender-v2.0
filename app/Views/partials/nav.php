@@ -1,4 +1,8 @@
- <header class="sticky top-0 z-50 bg-gray-900/80 backdrop-blur border-b border-white/10 shadow-lg opacity-0 -translate-y-10" id="navbar">
+<?php
+    define('BASE_URL', 'http://localhost/Spender-v2.0/');
+?>
+
+<header class="sticky top-0 z-50 bg-gray-900/80 backdrop-blur border-b border-white/10 shadow-lg opacity-0 -translate-y-10" id="navbar">
         <nav class="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
             <a href="index.php"
                 class="text-2xl font-extrabold bg-gradient-to-r from-blue-400 to-indigo-500 bg-clip-text text-transparent">

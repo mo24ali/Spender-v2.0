@@ -18,7 +18,9 @@ $conn = Database::getInstance();
 
 <body class="min-h-screen bg-gradient-to-br from-gray-950 via-gray-900 to-gray-800 text-white">
 
-    <?php require_once __DIR__ . "/../partials/nav.php"; ?>
+
+<!-- NAVBAR -->
+    <?php require "../partials/nav.php"; ?>
 
     <section class="pt-24 text-center">
         <h2 class="text-sm uppercase tracking-widest text-indigo-400">Wallet</h2>
@@ -153,6 +155,12 @@ $conn = Database::getInstance();
                 window.location.href = 'mycard.php';
             }
         }
+         gsap.to("#navbar", {
+            duration: 1,
+            y: 0,
+            opacity: 1,
+            ease: "power2.out"
+        });
     </script>
 </body>
 

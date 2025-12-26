@@ -1,12 +1,16 @@
 <?php
-    require "../config/connexion.php";
+    require "../Core/database.php";
     session_start();
+
+
+    $db = Database::getInstance();
+    $conn = $db->getConnection();
     $userId = $_SESSION['user_id'];
     $request = "SELECT * FROM income i , expense e where i.user_id='$userId' and e.user_id='$userId'";
-    $query = mysqli_query($conn,$request);
+    $query = $conn->query($request);
     $data = array();
-    if(mysqli_num_rows($query) > 0){
-        while($rows = mysqli_fetch_assoc($query)){
+    if($query->rowCount() > 0){
+        while($rows = $query->fetch(PDO::FETCH_ASSOC)){
             $data[] = $rows;
         }
     }

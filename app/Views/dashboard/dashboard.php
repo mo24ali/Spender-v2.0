@@ -8,9 +8,43 @@
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.5.0/chart.min.js"></script>
     <title>Dashboard</title>
     <script src="../../../js/forms.js"></script>
-    <script src="../../../js/chart.js"></script>
+    <?php
+            require "../../Core/database.php";
+            $db = Database::getInstance();
+            $conn = $db->getConnection();
+            $requestExpense = "SELECT price, dueDate, Month(dueDate) as month FROM expense";
+            $queryExpense = $conn->prepare($requestExpense);
+            $requestIncome = "SELECT price, getIncomeDate , Month(getIncomeDate) as month FROM income";
+            $queryincome = $conn->prepare($requestIncome);
+            $dataExpense = [];
+            $dataIncome = [];
+
+            while ($row = $queryExpense->fetch(PDO::FETCH_ASSOC)) {
+                $dataExpense[] = [
+                    "price" => (float)$row["price"],
+                    "date"  => $row["dueDate"],
+                    "month" => $row["month"]
+                ];
+            }
+
+
+            while ($row = $queryincome->fetch(PDO::FETCH_ASSOC)) {
+                $dataIncome[] = [
+                    "price" => (float)$row["price"],
+                    "date" => $row["getIncomeDate"],
+                    "month" => $row["month"]
+                ];
+            }
+    ?>
+    <script>
+        let exp = <?php echo json_encode($dataExpense) ?>;
+        let inc = <?php echo json_encode($dataIncome) ?>;
+    </script>
+    <script src="../../js/chart.js" defer></script>
+
 </head>
 
 <?php
@@ -25,7 +59,7 @@ $conn = $db->getConnection();
 <body class="bg-gradient-to-br from-gray-950 via-gray-900 to-gray-800 text-white">
 
     <!-- NAVBAR -->
-        <?php require "../partials/nav.php"; ?>
+    <?php require "../partials/nav.php"; ?>
     <!-- MAIN CONTENT -->
     <main class="max-w-6xl mx-auto mt-20 px-4">
         <div class="flex items-center justify-between mb-10">
@@ -76,7 +110,7 @@ $conn = $db->getConnection();
                 </form>
                 <button id="exportCsv"
                     class="text-white px-4 sm:px-5 py-2.5 rounded-xl font-semibold bg-white dark:bg-gray-900 border hover:bg-white hover:text-black transform duration-300">
-                    <a href="export/exportcsv.php">
+                    <a href="../../Services/exportCsvService.php">
                         Export csv
                         <i class="fa fa-download"></i>
                     </a>
@@ -120,7 +154,7 @@ $conn = $db->getConnection();
 
                     <div class="flex items-center gap-3 text-sm text-body">
                         <p class="text-green-600 dark:text-green-400 font-medium">
-                            <i class="fa-solid fa-money-bill-trend-up"></i> minichart
+                            <i class="fa-solid fa-monfey-bill-trend-up"></i> minichart
                         </p>
                         <p>compared with the last month</p>
                     </div>
@@ -206,7 +240,9 @@ $conn = $db->getConnection();
 
             <!-- CHART -->
             <div class="bg-neutral-primary-soft border border-default rounded-xl shadow-xs p-4 flex items-center justify-center sm:col-span-2 lg:col-span-2">
-                <canvas id="chart" class="w-full h-64"></canvas>
+                <canvas id="chart" class="w-full h-64">
+
+                </canvas>
             </div>
 
             <!-- ACTIVITIES -->
@@ -245,47 +281,17 @@ $conn = $db->getConnection();
     </div>
 
 
-    <?php
-    // require "config/connexion.php";
 
-    $requestExpense = "SELECT price, dueDate, Month(dueDate) as month FROM expense";
-    $queryExpense = $conn->prepare($requestExpense);
-    $requestIncome = "SELECT price, getIncomeDate , Month(getIncomeDate) as month FROM income";
-    $queryincome = $conn->prepare($requestIncome);
-    $dataExpense = [];
-    $dataIncome = [];
-
-    while ($row = $queryExpense->fetch(PDO::FETCH_ASSOC)) {
-        $dataExpense[] = [
-            "price" => (float)$row["price"],
-            "date"  => $row["dueDate"],
-            "month" => $row["month"]
-        ];
-    }
-
-
-    while ($row = $queryincome->fetch(PDO::FETCH_ASSOC)) {
-        $dataIncome[] = [
-            "price" => (float)$row["price"],
-            "date" => $row["getIncomeDate"],
-            "month" => $row["month"]
-        ];
-    }
-    ?>
     <script>
-        let exp = <?php echo json_encode($dataExpense) ?>;
-        let inc = <?php echo json_encode($dataIncome) ?>;
-    </script>
-    <script>
-      // overall navbar animation 
+        // overall navbar animation 
 
         // Navbar slide-in
-            gsap.to("#navbar", {
-                duration: 1,
-                y: 0,
-                opacity: 1,
-                ease: "power2.out"
-            });
+        gsap.to("#navbar", {
+            duration: 1,
+            y: 0,
+            opacity: 1,
+            ease: "power2.out"
+        });
         let burgerBtn = document.getElementById('burgerBtn');
         let mobileMenu = document.getElementById('mobileMenu');
 
