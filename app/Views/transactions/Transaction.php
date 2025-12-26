@@ -23,8 +23,8 @@ class Transaction
 
         if (!empty($category_id) && $type === "expenses") {
             $limitStmt = $this->conn->prepare("
-                SELECT `limit` FROM expense_category_limit 
-                WHERE category_id = ? AND user_id = ?
+                SELECT monthly_limit FROM categories
+                WHERE categoryId = ? AND user_id = ?
             ");
             $limitStmt->execute([$category_id, $user_id]);
             $res = $limitStmt->fetch(PDO::FETCH_ASSOC);
@@ -33,12 +33,12 @@ class Transaction
             if ($category_limit) {
                 $sumStmt = $this->conn->prepare("
                     SELECT SUM(amount) as total 
-                    FROM expenses ex 
+                    FROM expense ex 
                     JOIN carte c ON c.idCard = ex.card_id 
                     WHERE c.user_id = ? AND ex.category_id = ?
                 ");
                 $sumStmt->execute([$user_id, $category_id]);
-                $current_month_total = $sumStmt->fetch(PDO::FETCH_ASSOC)['total'] ?? 0;
+                $current_month_total = $sumStmt->fetch(PDO::FETCH_ASSOC)['total'];
 
                 if ($current_month_total + $amount > $category_limit) {
                     return [
@@ -79,24 +79,7 @@ class Transaction
     }
 
 
-    public function getEventTransactions()
-    {
-        $sql = "(
-            SELECT 'expenses' as type, title, amount, description, date, card_id, user_id, category_id 
-            FROM expenses_events 
-            LEFT JOIN expenses ON expenses.id = expenses_events.expense_id 
-            LEFT JOIN carte ON expenses.card_id = carte.idCard
-        )
-        UNION ALL
-        (
-            SELECT 'incomes' as type, title, amount, description, date, card_id, user_id, category_id 
-            FROM incomes_events 
-            LEFT JOIN incomes ON incomes.id = incomes_events.income_id 
-            LEFT JOIN carte ON incomes.card_id = carte.idCard
-        )";
-
-        return $this->conn->query($sql)->fetchAll(PDO::FETCH_ASSOC);
-    }
+    
     public function processRecurring()
     {
         $todayDay = date('d');

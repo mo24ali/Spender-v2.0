@@ -1,138 +1,45 @@
 const ctx = document.getElementById("chart");
-console.log(exp);
-console.log(inc);
+const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
-//date extractions
-let expDates = [];
-exp.forEach((el) => {
-  expDates.push(el["date"]);
-})
-console.log(expDates);
+let monthlyIncome = new Array(12).fill(0);
+let monthlyExpense = new Array(12).fill(0);
 
-let incDates = [];
-inc.forEach((el) => {
-  incDates.push(el["date"]);
-})
+inc.forEach(el => {
+    let mIndex = parseInt(el.month) - 1; 
+    monthlyIncome[mIndex] += parseFloat(el.price);
+});
 
-console.log(incDates);
-
-
-
-//price data extration
-//incomes data
-
-let incDataPrices = [];
-
-inc.forEach((el) =>{
-  incDataPrices.push(el["price"]);
-})
-console.log(incDataPrices);
-
-let expDataPrices = [];
-
-exp.forEach((el) =>{
-  expDataPrices.push(el["price"]);
-})
-
-console.log(expDataPrices);
-
-
-//months Array
-let monthArr = [];
-inc.forEach((el) =>{
-  monthArr.push(el["month"]);
-})
+exp.forEach(el => {
+    let mIndex = parseInt(el.month) - 1;
+    monthlyExpense[mIndex] += parseFloat(el.price);
+});
 
 new Chart(ctx, {
-    type: "bar",   
+    type: 'bar',
     data: {
-        labels: monthArr,
+        labels: monthNames,
         datasets: [
             {
-              label: "Income",
-              type: "bar",
-              data: incDataPrices,
-              borderColor: "#008FFB",
-              backgroundColor: "#008FFB88",
-              yAxisID: "yIncome",
+                label: 'Income',
+                data: monthlyIncome,
+                backgroundColor: '#008FFB88',
+                borderColor: '#008FFB',
+                borderWidth: 1
             },
             {
-                label: "Cashflow",
-                type: "bar",
-                data: expDataPrices,
-                borderColor: "#00E396",
-                backgroundColor: "#00E39688",
-                yAxisID: "yCash",
-            },
-            {
-                label: "Revenue",
-                type: "line",
-                data: expDataPrices,
-                borderColor: "#FEB019",
-                backgroundColor: "#FEB019",
-                fill: false,
-                borderWidth: 3,
-                yAxisID: "yRevenue",
+                label: 'Expenses',
+                data: monthlyExpense,
+                backgroundColor: '#00E39688',
+                borderColor: '#00E396',
+                borderWidth: 1
             }
         ]
     },
-
     options: {
         responsive: true,
-        interaction: {
-            mode: "index",
-            intersect: false
-        },
-
-        plugins: {
-            title: {
-                display: true,
-                text: "My economy",
-                align: "start",
-                padding: 20,
-                font: { size: 18 }
-            },
-            legend: {
-                position: "top",
-                align: "start"
-            }
-        },
-
+        maintainAspectRatio: false,
         scales: {
-            yIncome: {
-                type: "linear",
-                position: "left",
-                title: {
-                    display: true,
-                    text: "Income (thousand crores)",
-                    color: "#008FFB"
-                },
-                ticks: { color: "#008FFB" }
-            },
-
-            yCash: {
-                type: "linear",
-                position: "right",
-                title: {
-                    display: true,
-                    text: "Operating Cashflow (thousand crores)",
-                    color: "#00E396"
-                },
-                ticks: { color: "#00E396" },
-                grid: { drawOnChartArea: false }
-            },
-
-            yRevenue: {
-                type: "linear",
-                position: "right",
-                title: {
-                    display: true,
-                    text: "Revenue (thousand crores)",
-                    color: "#FEB019"
-                },
-                ticks: { color: "#FEB019" },
-                grid: { drawOnChartArea: false }
-            }
+            y: { beginAtZero: true }
         }
     }
 });

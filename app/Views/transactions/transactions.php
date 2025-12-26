@@ -11,19 +11,19 @@
 
 <?php
 require "../../Core/database.php";
-    $db = Database::getInstance();
-    $conn = $db->getConnection();
+$db = Database::getInstance();
+$conn = $db->getConnection();
 session_start();
 $userId = $_SESSION['user_id'];
 ?>
 
 <body class="bg-gradient-to-br from-gray-950 via-gray-900 to-gray-800 text-white">
 
-     
-        <?php
-        
-            require "../partials/nav.php";
-        ?>
+
+    <?php
+
+    require "../partials/nav.php";
+    ?>
 
     <section class="max-w-6xl mx-auto px-6 mt-20">
         <div class="max-w-7xl mx-auto px-6">
@@ -35,7 +35,7 @@ $userId = $_SESSION['user_id'];
 
             <div class="grid gap-8 lg:grid-cols-3 lg:grid-rows-2">
 
-                
+
                 <div class="lg:row-span-2 flex flex-col rounded-3xl bg-gray-900/40 border border-white/10 shadow-2xl backdrop-blur-sm overflow-hidden">
                     <div class="p-8 border-b border-white/5 bg-white/[0.02] flex justify-between items-center">
                         <h3 class="text-xl font-bold">Expenses</h3>
@@ -81,7 +81,6 @@ $userId = $_SESSION['user_id'];
                     </div>
                 </div>
 
-                <!-- RECURRENT (Middle Top) -->
                 <div class="rounded-3xl bg-gray-900/40 border border-white/10 shadow-2xl backdrop-blur-sm overflow-hidden flex flex-col">
                     <div class="p-6 border-b border-white/5">
                         <h3 class="text-lg font-bold italic text-indigo-300 tracking-wide">Recurrent Transactions</h3>
@@ -122,7 +121,6 @@ $userId = $_SESSION['user_id'];
                     </div>
                 </div>
 
-                <!-- TRANSFERS (Middle Bottom) -->
                 <div class="rounded-3xl bg-gray-900/40 border border-white/10 shadow-2xl backdrop-blur-sm overflow-hidden flex flex-col">
                     <div class="p-6 border-b border-white/5">
                         <h3 class="text-lg font-bold italic text-emerald-300 tracking-wide">My Transfers</h3>
@@ -156,7 +154,6 @@ $userId = $_SESSION['user_id'];
                     </div>
                 </div>
 
-                <!-- INCOMES (Right Sidebar) -->
                 <div class="lg:row-span-2 flex flex-col rounded-3xl bg-gray-900/40 border border-white/10 shadow-2xl backdrop-blur-sm overflow-hidden">
                     <div class="p-8 border-b border-white/5 bg-white/[0.02] flex justify-between items-center">
                         <h3 class="text-xl font-bold">Incomes</h3>

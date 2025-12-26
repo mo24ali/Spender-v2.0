@@ -94,7 +94,7 @@
             <tbody>
                 <?php
                 $userId = $_SESSION['user_id'];
-                echo $userId;
+                // echo $userId;
                 $catergory;
                 $monthFilter;
                 $priceSort;

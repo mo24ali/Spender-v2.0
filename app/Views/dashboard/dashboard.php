@@ -8,36 +8,35 @@
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.5.0/chart.min.js"></script>
     <title>Dashboard</title>
-    <script src="../../../js/forms.js"></script>
+    <script src="../../js/forms.js"></script>
     <?php
-            require "../../Core/database.php";
-            $db = Database::getInstance();
-            $conn = $db->getConnection();
-            $requestExpense = "SELECT price, dueDate, Month(dueDate) as month FROM expense";
-            $queryExpense = $conn->prepare($requestExpense);
-            $requestIncome = "SELECT price, getIncomeDate , Month(getIncomeDate) as month FROM income";
-            $queryincome = $conn->prepare($requestIncome);
-            $dataExpense = [];
-            $dataIncome = [];
+    require "../../Core/database.php";
+    $db = Database::getInstance();
+    $conn = $db->getConnection();
+    $requestExpense = "SELECT price, dueDate, Month(dueDate) as month FROM expense";
+    $queryExpense = $conn->prepare($requestExpense);
+    $requestIncome = "SELECT price, getIncomeDate , Month(getIncomeDate) as month FROM income";
+    $queryincome = $conn->prepare($requestIncome);
+    $dataExpense = [];
+    $dataIncome = [];
 
-            while ($row = $queryExpense->fetch(PDO::FETCH_ASSOC)) {
-                $dataExpense[] = [
-                    "price" => (float)$row["price"],
-                    "date"  => $row["dueDate"],
-                    "month" => $row["month"]
-                ];
-            }
+    while ($row = $queryExpense->fetch(PDO::FETCH_ASSOC)) {
+        $dataExpense[] = [
+            "price" => (float)$row["price"],
+            "date"  => $row["dueDate"],
+            "month" => $row["month"]
+        ];
+    }
 
 
-            while ($row = $queryincome->fetch(PDO::FETCH_ASSOC)) {
-                $dataIncome[] = [
-                    "price" => (float)$row["price"],
-                    "date" => $row["getIncomeDate"],
-                    "month" => $row["month"]
-                ];
-            }
+    while ($row = $queryincome->fetch(PDO::FETCH_ASSOC)) {
+        $dataIncome[] = [
+            "price" => (float)$row["price"],
+            "date" => $row["getIncomeDate"],
+            "month" => $row["month"]
+        ];
+    }
     ?>
     <script>
         let exp = <?php echo json_encode($dataExpense) ?>;
@@ -152,7 +151,7 @@ $tr->processRecurring();
                             $monthCondition = "AND MONTH(i.getIncomeDate) = '$month' AND MONTH(e.dueDate) = '$month'";
                         }
                         $userId = $_SESSION['user_id'];
-                        $query = "select SUM(i.price)-SUM(e.price) as total from income i ,expense e where i.user_id =$userId AND e.user_id=$userId $monthCondition";
+                        $query = "select ifnull((SUM(i.price)-SUM(e.price)),0) as total from income i ,expense e where i.user_id =$userId AND e.user_id=$userId $monthCondition";
                         $request = $conn->query($query);
                         $row = $request->fetch(PDO::FETCH_ASSOC);
                         echo $row['total'];
@@ -247,9 +246,9 @@ $tr->processRecurring();
 
             <!-- CHART -->
             <div class="bg-neutral-primary-soft border border-default rounded-xl shadow-xs p-4 flex items-center justify-center sm:col-span-2 lg:col-span-2">
-                <canvas id="chart" class="w-full h-64">
-
-                </canvas>
+                <div class="relative w-full h-64">
+                    <canvas id="chart"></canvas>
+                </div>
             </div>
 
             <!-- ACTIVITIES -->

@@ -171,3 +171,8 @@ CREATE TABLE expense_events (
     last_generated INT NOT NULL,
     day_of_month DATETIME DEFAULT CURRENT_TIMESTAMP
 );
+
+ALTER TABLE expense 
+ADD COLUMN card_id INT,
+ADD CONSTRAINT fk_expense_card 
+FOREIGN KEY (card_id) REFERENCES carte(idCard) ON DELETE SET NULL;
