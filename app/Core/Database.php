@@ -3,9 +3,11 @@
 
 class Database
 {
-    private static PDO $conn;
+    private static ?PDO $conn = null;
+    private static ?Database $instance = null;
 
-    public function __construct()
+    
+    private function __construct()
     {
         $config = require __DIR__ . '/../config/connexion.php';
         
@@ -32,5 +34,13 @@ class Database
     {
         return self::$conn; 
     }
+    public static function getInstance():Database{
+        if(is_null(self::$conn)){
+            self::$instance = new self();
+
+        }
+        return self::$instance;
+    }
+
 }
 
