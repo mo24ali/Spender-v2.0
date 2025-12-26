@@ -67,14 +67,13 @@ class Income
         ]);
     }
 
-    // Setters allow you to change state after instantiation
     public function setIncomeId($id) { $this->incomeId = $id; }
 
 
     public function delete(){
         if(!$this->incomeId) return false;
         $query = "DELETE FROM income WHERE incomeId=?";
-        $stmt = $this->conn->prepare($query);
+        $stmt = $this->conn->getConnection()->prepare($query);
         return $stmt->execute([$this->incomeId]);
     }
 }

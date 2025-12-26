@@ -6,8 +6,8 @@
     $userId = $_SESSION['user_id'];
     $id = $_GET['id'];
     
-    $db = new Database();
-    $conn = $db->getConnection();
+    // $db = new Database();
+    $conn = Database::getInstance();
     $deletedData = getIncomeById($id,$conn);
     
     $inc = new Income($conn,$deletedData);
@@ -19,7 +19,7 @@
 
     function getIncomeById($id,$conn){
         $query = "select * from income where incomeId=?";
-        $stmt = $conn->prepare($query);
+        $stmt = $conn->getConnection()->prepare($query);
         $stmt->execute([$id]);
         $rows = $stmt->fetch(PDO::FETCH_ASSOC);
         return $rows;

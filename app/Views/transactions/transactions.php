@@ -11,7 +11,7 @@
 
 <?php
 require "../../Core/database.php";
-    $db = new Database();
+    $db = Database::getInstance();
     $conn = $db->getConnection();
 session_start();
 $userId = $_SESSION['user_id'];

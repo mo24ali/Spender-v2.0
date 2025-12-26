@@ -1,33 +1,30 @@
-
 <?php
 session_start();
-require "../config/connexion.php";
-require "../models/card.php";
+require_once __DIR__ . "/../../Core/database.php"; 
+require_once __DIR__ . "/../../models/card.php";
 
-$card = new Card($conn);
-
-
-$cardProvide = $_POST['provider'];
-$cardBalance = $_POST['balance'];
-$cardNumber = $_POST['cardNum'];
-$cardStatus = $_POST['status'];
-$cardLimite = $_POST['cardLimit'];
-$cardExpireDate = $_POST['expiredate'];
-// carte(#idCard, nom, user_id, currentSold,limite, statue, expireDate, num, user_id# )
-
+$conn = Database::getInstance();
 
 $id = $_GET['id'] ?? null;
 $userId = $_SESSION['user_id'];
-if (empty($id)) {
-    $card->addCard($userId,$cardLimite,$cardProvide,$cardBalance,$cardNumber,$cardExpireDate,$cardStatus);
-    header("Location: ../mycard.php");
-    exit;
+
+$data = [
+    'idCard'      => $id,
+    'user_id'     => $userId,
+    'nom'         => $_POST['provider'],
+    'currentSold' => $_POST['balance'],
+    'num'         => $_POST['cardNum'],
+    'statue'      => $_POST['status'],
+    'limite'      => $_POST['cardLimit'],
+    'expireDate'  => $_POST['expiredate']
+];
+
+$card = new Card($conn, $data);
+
+
+if ($card->save()) {
+    header("Location: mycard.php?success=1");
 } else {
-    $card->editCard($id);
-    header("Location: ../mycard.php");
-    exit;
+    header("Location: mycard.php?error=failed_to_save");
 }
-
-
-
-?>
+exit();

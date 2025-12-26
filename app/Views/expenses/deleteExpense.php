@@ -6,8 +6,7 @@
     $userId = $_SESSION['user_id'];
     $id = $_GET['id'];
     
-    $db = new Database();
-    $conn = $db->getConnection();
+    $conn = Database::getInstance();
     $deletedData = getExpenseById($id,$conn);
     
     $exp = new Expense($conn,$deletedData);
@@ -19,7 +18,7 @@
 
     function getExpenseById($id,$conn){
         $query = "select * from expense where expenseId=?";
-        $stmt = $conn->prepare($query);
+        $stmt = $conn->getConnection()->prepare($query);
         $stmt->execute([$id]);
         $rows = $stmt->fetch(PDO::FETCH_ASSOC);
         return $rows;

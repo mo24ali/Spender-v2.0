@@ -16,11 +16,10 @@
     <?php
     session_start();
     require "../../Core/database.php";
-    $db = new Database();
-    $conn = $db->getConnection();
+
+    $conn = Database::getInstance();
     ?>
     <!-- NAVBAR -->
-
     <?php
 
     require "../partials/nav.php";
@@ -125,7 +124,7 @@
 
 
                 $request = "SELECT * FROM expense where user_id=$userId and state='not paid' $catergoryCondition $monthCondition $priceSortCondition";
-                $query = $conn->query($request);
+                $query = $conn->getConnection()->query($request);
 
                 while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
                     $id = $row['expenseId'];
@@ -173,7 +172,7 @@
         <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg w-96 space-y-4">
             <h2 class="text-lg font-semibold mb-4">Set Category Limit</h2>
 
-            <form method="POST" action="categoryLimitHandler/categoryLimit.php" class="space-y-4">
+            <form method="POST" action="categoryLimit.php" class="space-y-4">
 
                 <label for="expenseCategoryLimit" class="block text-gray-700 font-medium">Category</label>
                 <select id="expenseCategoryLimit" name="categoryNameLimit"
@@ -228,7 +227,7 @@
 
             <?php
             $cardQuery = "SELECT * FROM carte WHERE user_id = $userId";
-            $request = $conn->query($cardQuery);
+            $request = $conn->getConnection()->query($cardQuery);
             ?>
             <?php while ($card = $request->fetch(PDO::FETCH_ASSOC)): ?>
                 <div class="border p-3 rounded mb-2 flex justify-between items-center">
@@ -244,7 +243,7 @@
                         <?php endif; ?>
                     </div>
 
-                    <form method="GET" action="transactions_handler/payExpense.php">
+                    <form method="GET" action="payExpense.php">
                         <input type="hidden" name="payed" value="<?= isset($_GET['expenseId']) ? (int)$_GET['expenseId'] : 0 ?>">
                         <input type="hidden" name="card" value="<?= htmlspecialchars($card['idCard']) ?>">
                         <button class="px-3 py-1 bg-green-500 text-white rounded text-xs">
@@ -275,7 +274,7 @@
         if (isset($_GET['id'])) {
             $modalId = $_GET['id'];
             $query = "SELECT * FROM expense WHERE expenseId = $modalId";
-            $request = $conn->query($query);
+            $request = $conn->getConnection()->query($query);
             $expense = $request->fetch(PDO::FETCH_ASSOC);
         }
         ?>

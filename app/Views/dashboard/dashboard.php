@@ -17,9 +17,9 @@
 session_start();
 require_once __DIR__ .  "/../../Core/Database.php";
 
-$con = new Database();
-$conn = $con->getConnection();
 
+$db = Database::getInstance();
+$conn = $db->getConnection();
 ?>
 
 <body class="bg-gradient-to-br from-gray-950 via-gray-900 to-gray-800 text-white">
@@ -149,7 +149,7 @@ $conn = $con->getConnection();
                         if ($month) {
                             $monthCondition = "AND MONTH(dueDate) = '$month'";
                         }
-                        $query = "select SUM(price) as total from expense where user_id=$userId $monthCondition";
+                        $query = "select IFNULL(SUM(price),0) as total from expense where user_id=$userId $monthCondition";
                         $request = $conn->query($query);
                         $row = $request->fetch(PDO::FETCH_ASSOC);
                         echo $row['total'];
@@ -187,7 +187,7 @@ $conn = $con->getConnection();
                         if ($month) {
                             $monthCondition = "AND MONTH(getIncomeDate) = '$month'";
                         }
-                        $query = "select SUM(price) as total from income where user_id=$userId $monthCondition";
+                        $query = "select IFNULL(SUM(price),0) as total from income where user_id=$userId $monthCondition";
                         $request = $conn->query($query);
                         $row = $request->fetch(PDO::FETCH_ASSOC);
                         echo $row['total'];

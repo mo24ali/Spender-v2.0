@@ -18,8 +18,8 @@
     <?php
     session_start();
     require "../../Core/database.php";
-    $db = new Database();
-    $conn = $db->getConnection();
+
+    $conn = Database::getInstance();
     ?>
     <!-- NAVBAR -->
 
@@ -127,7 +127,7 @@
                 $request = "SELECT * 
                             FROM income 
                             where user_id=$userId $catergoryCondition $monthCondition $priceSortCondition";
-                $query = $conn->query($request);
+                $query = $conn->getConnection()->query($request);
 
 
                 while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
@@ -174,7 +174,7 @@
         if (isset($_GET['id'])) {
             $modalId = $_GET['id'];
             $query = "SELECT * FROM income WHERE incomeId = $modalId";
-            $request = $conn->query($query);
+            $request = $conn->getConnection()->query($query);
             $income = $request->fetch(PDO::FETCH_ASSOC);
         }
         ?>

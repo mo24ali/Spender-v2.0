@@ -3,7 +3,7 @@ session_start();
 require_once "../../Core/database.php";
 require_once "../../Models/Income.php";
 
-$db = new Database();
+$db = Database::getInstance();
 $conn = $db->getConnection();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {

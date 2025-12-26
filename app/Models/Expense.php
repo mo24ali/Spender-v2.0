@@ -44,7 +44,7 @@ class Expense
     {
         $sql = "INSERT INTO expense (expenseTitle, description, user_id, price, categorie, dueDate, isRecurent) 
                 VALUES (?, ?, ?, ?, ?, ?, ?)";
-        $stmt = $this->conn->prepare($sql);
+        $stmt = $this->conn->getConnection()->prepare($sql);
         return $stmt->execute([
             $this->expenseTitle,
             $this->description,
@@ -61,7 +61,7 @@ class Expense
         $sql = "UPDATE expense SET 
                 expenseTitle = ?, description = ?, price = ?, categorie = ?, dueDate = ?, isRecurent = ? 
                 WHERE expenseId = ? AND user_id = ?";
-        $stmt = $this->conn->prepare($sql);
+        $stmt = $this->conn->getConnection()->prepare($sql);
         return $stmt->execute([
             $this->expenseTitle,
             $this->description,
@@ -77,7 +77,7 @@ class Expense
     public function delete()
     {
         if (!$this->expenseId) return false;
-        $stmt = $this->conn->prepare("DELETE FROM expense WHERE expenseId = ?");
+        $stmt = $this->conn->getConnection()->prepare("DELETE FROM expense WHERE expenseId = ?");
         return $stmt->execute([$this->expenseId]);
     }
 

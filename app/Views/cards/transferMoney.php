@@ -1,18 +1,20 @@
 <?php
 
-    require "../config/connexion.php";
+    require "../../Core/database.php";
     session_start();
     $receiverMail = $_POST['receiverMail'];
     $amount = $_POST['amount'];
     $sender = $_SESSION['user_id'];
 
 
+    $db = Database::getInstance();
+    $conn = $db->getConnection();
     $query = " select userId from users where email='$receiverMail' limit 1";
-    $request = mysqli_query($conn,$query);
+    $request = $conn->query($query);
     
 
-    if(mysqli_num_rows($request) > 0){
-        $result = mysqli_fetch_assoc($request);
+    if($request->rowCount() > 0){
+        $result = $request->fetch();
         $receiverId = $result['userId']; 
         
         //transferId 	idSender 	idReceiver 	amount 	daySent 	
@@ -20,14 +22,11 @@
                                     values (?,?,?)
                         ";
         $stmt = $conn->prepare($insertQuery);
-        $stmt->bind_param(
-            "iii",
-            $sender,
+       
+        $stmt->execute([ $sender,
             $receiverId,
-            $amount
-        );
-        $stmt->execute();
-        header("Location: ../transactions.php");
+            $amount]);
+        header("Location: ../transactions/transactions.php");
     }
 
 

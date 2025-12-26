@@ -3,8 +3,8 @@ session_start();
 require_once "../../Core/database.php";
 require_once "../../Models/Expense.php";
 
-$db = new Database();
-$conn = $db->getConnection();
+
+$conn = Database::getInstance();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $data = [
