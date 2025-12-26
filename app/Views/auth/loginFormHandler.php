@@ -3,7 +3,7 @@ session_start();
 require_once __DIR__ . "/../../Core/database.php";
 require "../../Models/User.php";
 
-$db = new Database();
+$db =Database::getInstance();
 $conn = $db->getConnection();
 
 if (isset($_POST['connexion'])) {
