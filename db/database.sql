@@ -165,3 +165,9 @@ ADD COLUMN user_id INT NOT NULL,
 ADD CONSTRAINT fk_categories_user
 FOREIGN KEY (user_id) REFERENCES users(userId) ON DELETE CASCADE;
 
+CREATE TABLE expense_events (
+    event_id INT PRIMARY KEY AUTO_INCREMENT,
+    original_expense_id INT NOT NULL,
+    last_generated INT NOT NULL,
+    day_of_month DATETIME DEFAULT CURRENT_TIMESTAMP
+);

@@ -1,5 +1,5 @@
 <?php
-
+namespace Connection;
 return [
     'host' => 'localhost',
     'dbname' => 'spender',

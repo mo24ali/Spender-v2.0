@@ -80,7 +80,7 @@ class User
         return ["status" => "error", "message" => "Wrong email or password"];
     }
 
-    public function logout()
+    static function logout()
     {
         if (session_status() === PHP_SESSION_NONE) session_start();
         session_unset();
